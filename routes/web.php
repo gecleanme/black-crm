@@ -46,6 +46,6 @@ Route::post('/customer/store', [CustomerController::class, 'store']);
 Route::get('/contract/create', [ContractController::class, 'create']);
 Route::post('/contract/store', [ContractController::class, 'store']);
 
-Route::get('/cycle/create', [ContractCycleController::class, 'create']);
+Route::get('/cycle/create', [ContractCycleController::class, 'create'])->name('cycles.create');
 Route::post('/cycle/store', [ContractCycleController::class, 'store']);
 

@@ -63,6 +63,8 @@ class ContractCycleController extends Controller
           }
       }
 
+      return redirect()->route('cycles.create')->with('success','asasas');
+
 
 
 

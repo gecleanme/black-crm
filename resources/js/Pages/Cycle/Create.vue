@@ -31,8 +31,8 @@ const formData = useForm({
     // create form and v-model the elements
     value: null,
     premium: null,
-    start_date: formattedStart,
-    end_date: formattedEnd,
+    start_date: useFormatDateToISO(startDate.value),
+    end_date: useFormatDateToISO(endDate.value), // oh ok
     vendor: "",
     notes: "",
     attachments : []
@@ -75,7 +75,11 @@ const packFiles = (event) => {
 
 const reset = () => formData.reset();
 
-const sendData = () => formData.post('/cycle/store',{
+const sendData = () => formData.transform((data) => ({
+    ...data,
+    start_date:useFormatDateToISO(data.start_date),
+    end_date:useFormatDateToISO(data.end_date),
+})).post('/cycle/store',{
     onSuccess: () => formData.reset()
 });
 
@@ -195,11 +199,10 @@ export default {
                                     </div>
                                     <p v-if="formData.errors.attachments">{{formData.errors.attachments}}</p>
                                 </div>
-
-
+                                
                                 <div class="md:col-span-5 float-right">
                                         <div class="inline-flex items-end">
-                                            <button class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded">Create Cycle</button>
+                                            <button :disabled="formData.processing" class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded disabled:bg-opacity-40">Create Cycle {{formData.progress}}</button>
                                         </div>
                                     </div>
 
