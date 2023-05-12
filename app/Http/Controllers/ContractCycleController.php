@@ -45,7 +45,7 @@ class ContractCycleController extends Controller
         $startDate = Carbon::parse( $validatedData['start_date']);
         $endDate = Carbon::parse( $validatedData['end_date']);
 
-       ContractCycle::create([
+      $cycle= ContractCycle::create([
             'value' => $validatedData['value'],
             'premium' => $validatedData['premium'],
             'notes' => $validatedData['notes'],
@@ -53,6 +53,19 @@ class ContractCycleController extends Controller
             'start_date' => $startDate,
             'end_date' => $endDate
         ]);
+
+      if ($request->hasFile('attachments')){
+          foreach ($request->file('attachments') as $file){
+            $attachments = $file->store('attachments', 'public');
+              $cycle->attachments()->create([
+                  'attachments' => $attachments
+              ]);
+          }
+      }
+
+
+
+
     }
 
 

@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Customer extends Model
 {
     use HasFactory;
+
+    public function attachments()
+    {
+        return $this->morphMany(Attachment::class, 'attachable'); //has many attachables
+    }
 }

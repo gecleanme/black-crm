@@ -34,7 +34,8 @@ const formData = useForm({
     start_date: formattedStart,
     end_date: formattedEnd,
     vendor: "",
-    notes: ""
+    notes: "",
+    attachments : []
 });
 //
 // const attachmentPreview= ref( formData.attachments)
@@ -60,6 +61,15 @@ const formData = useForm({
 //
 //
 // }
+
+
+const packFiles = (event) => {
+    for (const att of event.target.files) {
+        formData.attachments.push(att);
+    }
+}
+
+
 
 
 
@@ -164,18 +174,43 @@ export default {
 
                                     </div>
 
-                                    <div class="md:col-span-5 text-right">
+                                    <div class="md:col-span-6">
+                                        <label class="block text-sm font-medium text-black">
+                                            Attachments
+                                        </label>
+
+                                        <div class="flex text-sm text-gray-600">
+                                            <label for="file-upload" class="p-2 mt-2 relative cursor-pointer bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
+                                                <span class="text-center mx-auto">Upload a media file</span>
+                                                <input multiple id="file-upload" type="file" @input="packFiles" class="p-2 mt-2 sr-only" accept=".jpg,.png,.mp4"/>
+
+                                            </label>
+                                            <p class="text-sm text-black mt-4 ml-1" v-if="formData.attachments.length">
+                                               {{formData.attachments.length}} File(s) Uploaded!
+                                            </p>
+                                        </div>
+                                        <p class="text-xs text-black m-2">
+                                            PNG, JPG, MP4
+                                        </p>
+                                    </div>
+                                    <p v-if="formData.errors.attachments">{{formData.errors.attachments}}</p>
+                                </div>
+
+
+                                <div class="md:col-span-5 float-right">
                                         <div class="inline-flex items-end">
                                             <button class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded">Create Cycle</button>
                                         </div>
                                     </div>
 
 
-                                    <div class="md:col-span-5 text-right">
+                                    <div class="md:col-span-5 mx-1 float-right">
                                         <div class="inline-flex items-end">
                                             <button type="reset" class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded" @click="reset">Reset</button>
                                         </div>
                                     </div>
+
+
 
                                 </div>
                             </div>
@@ -183,8 +218,6 @@ export default {
                     </div>
                 </div>
             </div>
-        </div>
-
         <!-- Template end   -->
 
     </form>

@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ContractCycle extends Model
+class Attachment extends Model
 {
     use HasFactory;
 
-    public function attachments()
+    public function attachable() //this has to match the related models
     {
-        return $this->morphMany(Attachment::class, 'attachable'); //has many attachables
+        $this->morphTo(); //instead of belongsTo
     }
 }
