@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -11,9 +12,18 @@ class CustomerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+
+        $query=Customer::query()
+            ->when($request->query('search'),function ($q) use ($request) {
+                $term=$request->query('search');
+                $q->where('name','LIKE','%'.$term.'%');
+            });
+
+        if ($request->wantsJson()){
+            return CustomerResource::collection($query->get());
+        }
     }
 
     /**

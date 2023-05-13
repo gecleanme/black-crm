@@ -64,11 +64,14 @@ const formData = useForm({
 
 
 const packFiles = (event) => {
+        console.log(event.target.files)
     for (const att of event.target.files) {
         formData.attachments.push(att);
+        console.log(formData.attachments)
     }
 }
 
+;
 
 
 
@@ -189,9 +192,14 @@ export default {
                                                 <input multiple id="file-upload" type="file" @input="packFiles" class="p-2 mt-2 sr-only" accept=".jpg,.png,.mp4"/>
 
                                             </label>
-                                            <p class="text-sm text-black mt-4 ml-1" v-if="formData.attachments.length">
+                                            <span class="text-sm text-black mt-4 ml-1" v-if="formData.attachments.length">
                                                {{formData.attachments.length}} File(s) Uploaded!
-                                            </p>
+                                            </span>
+
+
+
+
+
                                         </div>
                                         <p class="text-xs text-black m-2">
                                             PNG, JPG, MP4
@@ -199,7 +207,7 @@ export default {
                                     </div>
                                     <p v-if="formData.errors.attachments">{{formData.errors.attachments}}</p>
                                 </div>
-                                
+
                                 <div class="md:col-span-5 float-right">
                                         <div class="inline-flex items-end">
                                             <button :disabled="formData.processing" class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded disabled:bg-opacity-40">Create Cycle {{formData.progress}}</button>

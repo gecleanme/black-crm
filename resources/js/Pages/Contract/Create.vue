@@ -1,9 +1,8 @@
 <script setup xmlns="http://www.w3.org/1999/html">
 
-import {ref} from "vue";
+import {inject, onMounted, ref} from "vue";
 
 import {useForm} from "@inertiajs/vue3";
-
 const formData = useForm({
 //create form and v-model the elements
     title: null,
@@ -17,6 +16,38 @@ const formData = useForm({
     pnum:null,
     lic_exp:null
 });
+
+let props = defineProps({
+
+    makes:Array,
+    models:Array
+
+})
+
+const customers=ref([])
+const searchQuery = ref('')
+const customersLoading = ref(false)
+function fetchCustomers() {
+    customersLoading.value=true
+    axios.get(`/customers?search=${searchQuery.value}`).then(({data})=>{
+        customers.value=data.data
+    }).finally(()=>{
+        customersLoading.value=false
+    })
+}
+
+function onSearch(q) {
+   searchQuery.value=q;
+}
+
+function range(start, end) {
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+}
+
+
+
+
+
 //
 // const attachmentPreview= ref( formData.attachments)
 //
@@ -47,6 +78,7 @@ const reset = () => formData.reset();
 const sendData = () => formData.post('/contract/store',{
     onSuccess: () => formData.reset()
 });
+
 </script>
 
 <script>
@@ -58,7 +90,10 @@ export default {
 }
 </script>
 
+
+
 <template>
+
     <Head title="Contract Create" />
     <form @submit.prevent="sendData">
 
@@ -121,11 +156,18 @@ export default {
 
                                     <div class="md:col-span-3">
                                         <label for="full_name" class="font-semibold">Client</label>
+                                        <v-autocomplete
+                                            clearable
+                                            @update:search="onSearch"
+                                            @keyup.enter="fetchCustomers"
+                                            label="Search for a Customer and hit Enter"
+                                            :items="customers"
+                                            item-title="text"
+                                            :loading="customersLoading"
+                                            item-value="id"
+                                            v-model="formData.client"
+                                        ></v-autocomplete>
 
-                                        <select class="select w-full" v-model="formData.client">
-                                            <option disabled selected class="text-black" value="">Select Client</option>
-                                            <option value="1">Homer</option>
-                                        </select>
 
                                         <p v-if="formData.errors.client" class="text-sm text-red-500 font-semibold">{{formData.errors.client}}</p>
                                     </div>
@@ -140,8 +182,7 @@ export default {
 
                                         <select class="select w-full" v-model="formData.make">
                                             <option disabled selected class="text-black" value="">Select Make</option>
-                                            <option value="Homer">Homer</option>
-
+                                            <option v-for="(make, index) in props.makes" :key="index" :value="make">{{make}}</option>
                                         </select>
 
                                         <p v-if="formData.errors.make" class="text-sm text-red-500 font-semibold">{{formData.errors.make}}</p>
@@ -158,7 +199,7 @@ export default {
 
                                         <select class="select w-full" v-model="formData.model">
                                             <option disabled selected class="text-black" value="">Select Model</option>
-                                            <option value="Homer">Homer</option>
+                                            <option v-for="(model, index) in props.models[formData.make]" :key="index" :value="model">{{model}}</option>
 
                                         </select>
 
@@ -176,7 +217,7 @@ export default {
 
                                         <select class="select w-full" v-model="formData.prod_year">
                                             <option disabled selected class="text-black" value="">Select Year</option>
-                                            <option value="2023">2023</option>
+                                            <option v-for="(year, index) in range(1999,2024)" :key="index" :value="year">{{year}}</option>
                                         </select>
 
                                         <p v-if="formData.errors.prod_year" class="text-sm text-red-500 font-semibold">{{formData.errors.prod_year}}</p>

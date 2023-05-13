@@ -243,8 +243,8 @@ import { Link } from '@inertiajs/vue3';
                         <v-list color="">
                             <v-list-item
                                 prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-                                title="Sandra Adams"
-                                subtitle="sandra_a88@gmailcom"
+                                :title="$page.props.user?.name"
+                                :subtitle="$page.props.user?.email"
                             ></v-list-item>
                         </v-list>
 

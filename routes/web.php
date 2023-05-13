@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
+Route::get('/customers', [CustomerController::class, 'index']);
 Route::get('/customer/create', [CustomerController::class, 'create']);
 Route::post('/customer/store', [CustomerController::class, 'store']);
 

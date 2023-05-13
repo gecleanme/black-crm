@@ -21,7 +21,12 @@ class ContractController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Contract/Create');
+
+
+        return Inertia::render('Contract/Create',[
+            'makes' => Contract::MAKES,
+            'models' => Contract::MODELS
+        ]);
 
     }
 
@@ -43,6 +48,8 @@ class ContractController extends Controller
             'title' => 'required|string|min:3|max:20'
 
         ]));
+
+        return redirect('/cycle/create');
     }
 
     /**
