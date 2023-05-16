@@ -19,37 +19,13 @@ const formData = useForm({
     risk_level:parseInt("25")
 
 });
-//
-// const attachmentPreview= ref( formData.attachments)
-//
-//
-// const packFiles = (event) => {
-//     for(const att of event.target.files){
-//         formData.attachments=att;
-//     }
-//
-//
-//     let file= event.target.files[0]
-//     if(!file){
-//         return
-//     }
-//
-//     const  reader = new FileReader()
-//     reader.onload=(e)=>{
-//         attachmentPreview.value=e.target.result
-//     }
-//
-//     reader.readAsDataURL(file)
-//
-//
-// }
 
-let vip = ref(false);
+const vip = ref(false);
 
 const setVip = () => {
-    vip = !vip
-    formData.vip = vip;
-}
+    vip.value = !vip.value;
+    formData.vip = vip.value;
+};
 
 const reset = () => formData.reset();
 
@@ -166,7 +142,7 @@ export default {
                                         <div class="form-control">
                                             <label class="label cursor-pointer font-semibold">
                                                 <span class="label-text">VIP Client?</span>
-                                                <input type="checkbox" :checked="formData.vip" class="checkbox bg-gray-100" @click="setVip" />
+                                                <input type="checkbox" :checked="formData.vip" class="checkbox bg-gray-100" @click="setVip()" />
                                             </label>
                                         </div>
 

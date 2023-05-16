@@ -15,7 +15,10 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
 
-        $query=Customer::query()
+        $filters= $request->only(['name','type']);
+        $types = ['Business', 'Individual'];
+
+         $query=Customer::query()
             ->when($request->query('search'),function ($q) use ($request) {
                 $term=$request->query('search');
                 $q->where('name','LIKE','%'.$term.'%');
@@ -24,6 +27,12 @@ class CustomerController extends Controller
         if ($request->wantsJson()){
             return CustomerResource::collection($query->get());
         }
+
+        return Inertia::render('Customer/Index',[
+            'customers' => Customer::query()->latest()->filter($filters)->paginate(10)->withQueryString(),
+            'filters' => $filters,
+            'types' => $types
+        ]);
     }
 
     /**
@@ -43,7 +52,7 @@ class CustomerController extends Controller
     {
         Customer::create($request->validate([
            'name' => 'required|string|min:2|max:20',
-           'cell'  => 'nullable|string|min:10|max:14',
+           'cell'  => 'required|string|min:10|max:14',
             'sex' => 'required|string',
             'vip' => 'required|boolean',
             'type' => 'required|string',
@@ -51,6 +60,7 @@ class CustomerController extends Controller
             'ref' => 'string|nullable',
             'dob' => 'date|nullable',
             'secondary_phone' => 'nullable|string|min:10|max:14',
+            'notes' => 'string|nullable|min:3|max:400'
 
         ]));
 

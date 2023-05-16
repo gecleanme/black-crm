@@ -3,6 +3,7 @@
 import {inject, onMounted, ref} from "vue";
 
 import {useForm} from "@inertiajs/vue3";
+import CreateCycle from "@/Pages/Cycle/Create.vue";
 const formData = useForm({
 //create form and v-model the elements
     title: null,
@@ -100,7 +101,7 @@ export default {
         <!-- Template Start   -->
         <!-- component -->
         <!-- Alert    -->
-        <div class="min-h-screen p-6 bg-gray-100 flex items-center justify-center">
+        <div class="min-h-screen p-6 bg-gray-100 flex items-center justify-center "  v-if="!formData.wasSuccessful">
             <div class="container max-w-screen-lg mx-auto">
                 <div>
                     <h2 class="font-semibold text-xl text-gray-600">Add a Contract</h2>
@@ -264,19 +265,24 @@ export default {
                                     </div>
 
 
-                                    <div class="md:col-span-5 text-right">
+                                    <div class="md:col-span-5 text-right" >
                                         <div class="inline-flex items-end">
                                             <button type="reset" class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded" @click="reset">Reset</button>
                                         </div>
                                     </div>
 
+
+
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
+
+
 
         <!-- Template end   -->
 

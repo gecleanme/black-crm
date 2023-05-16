@@ -14,15 +14,23 @@ class ContractController extends Controller
     public function index()
     {
 
+        $contracts= Contract::with(['cycles','customer'])
+            ->whereHas('cycles')
+            ->paginate(10);
+
+        return Inertia::render('Contract/Index',[
+            'contracts'=>$contracts,
+
+        ]);
+
     }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
+
     {
-
-
         return Inertia::render('Contract/Create',[
             'makes' => Contract::MAKES,
             'models' => Contract::MODELS
@@ -35,7 +43,7 @@ class ContractController extends Controller
      */
     public function store(Request $request)
     {
-        Contract::create($request->validate([
+       $contract = Contract::create($request->validate([
             'client' => 'required',
             'type' => 'required',
             'make' => 'required_if:type,"Auto"',
@@ -48,6 +56,8 @@ class ContractController extends Controller
             'title' => 'required|string|min:3|max:20'
 
         ]));
+
+       session(['contract_id'=> $contract->id]);
 
         return redirect('/cycle/create');
     }

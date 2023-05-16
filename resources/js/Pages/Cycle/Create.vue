@@ -99,7 +99,7 @@ import '@vuepic/vue-datepicker/dist/main.css'
 //const date = ref();
 export default {
     layout: Layout,
-    name:"CreatePage"
+    name:"CreateCycle"
 }
 </script>
 
@@ -210,7 +210,7 @@ export default {
 
                                 <div class="md:col-span-5 float-right">
                                         <div class="inline-flex items-end">
-                                            <button :disabled="formData.processing" class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded disabled:bg-opacity-40">Create Cycle {{formData.progress}}</button>
+                                            <button :disabled="formData.processing" class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded disabled:bg-opacity-40">Create Cycle</button>
                                         </div>
                                     </div>
 

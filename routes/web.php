@@ -49,4 +49,5 @@ Route::post('/contract/store', [ContractController::class, 'store']);
 
 Route::get('/cycle/create', [ContractCycleController::class, 'create'])->name('cycles.create');
 Route::post('/cycle/store', [ContractCycleController::class, 'store']);
+Route::get('/contracts', [ContractController::class, 'index']);
 

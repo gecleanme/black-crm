@@ -27,8 +27,8 @@ return new class extends Migration
             $table->date('end_date');
             $table->string('vendor');
             $table->longText('notes')->nullable();
-            $table->foreignId('contract_id')->nullable()->constrained()->cascadeOnDelete();
-//            $table->foreignIdFor(Contract::class,'contract_id')->default(1)->references('id')->on('contracts');
+            //$table->foreignId('contract_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Contract::class,'contract_id')->references('id')->on('contracts');
 
 
             $table->timestamps();

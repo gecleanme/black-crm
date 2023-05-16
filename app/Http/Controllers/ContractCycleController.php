@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contract;
 use App\Models\ContractCycle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -15,7 +16,8 @@ class ContractCycleController extends Controller
      */
     public function index()
     {
-        //
+
+
     }
 
     /**
@@ -33,6 +35,9 @@ class ContractCycleController extends Controller
 
     public function store(Request $request)
     {
+
+        $latest_contract= session('contract_id');
+
         $validatedData = $request->validate([
             'value' => 'required',
             'premium' => 'required',
@@ -46,6 +51,7 @@ class ContractCycleController extends Controller
         $endDate = Carbon::parse( $validatedData['end_date']);
 
       $cycle= ContractCycle::create([
+            'contract_id' => $latest_contract,
             'value' => $validatedData['value'],
             'premium' => $validatedData['premium'],
             'notes' => $validatedData['notes'],
@@ -63,7 +69,10 @@ class ContractCycleController extends Controller
           }
       }
 
-      return redirect()->route('cycles.create')->with('success','asasas');
+        session()->forget('contract_id');
+
+
+        return redirect('contract/create')->with('success','asasas');
 
 
 

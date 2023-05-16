@@ -46,4 +46,20 @@ class Contract extends Model
         'Toyota' => ['Corolla', 'Yaris']
     ];
 
+
+    protected $appends=['last_cycle'];
+
+    public function cycles()
+    {
+        return $this->hasMany(ContractCycle::class,'contract_id');
+    }
+
+    public function customer(){
+        return $this->belongsTo(Customer::class, 'client_id');
+    }
+
+    public function getLastCycleAttribute(){
+        return $this->cycles()->latest()->first();
+    }
+
 }

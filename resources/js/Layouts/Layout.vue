@@ -1,6 +1,9 @@
 <script setup>
 import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import { Link } from '@inertiajs/vue3';
+import {ref} from "vue";
+
+const drawer = ref(null)
 </script>
 
 <template>
@@ -235,9 +238,12 @@ import { Link } from '@inertiajs/vue3';
 
             <v-card>
                 <v-layout>
+                    <v-app-bar-nav-icon variant="text" v-if="$vuetify.display.smAndDown" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+<!--                    move the icon somewhere else  just rewind, fk it-->
                     <v-navigation-drawer
+                        v-model="drawer"
                         expand-on-hover
-                        rail
+                        :rail="$vuetify.display.mdAndUp"
                         class="bg-black"
                     >
                         <v-list color="">
@@ -253,10 +259,39 @@ import { Link } from '@inertiajs/vue3';
                         <v-list density="compact" nav>
                                 <Link href="/customer/create">
                                     <v-list-item prepend-icon="mdi-account-circle" title="Customers" value="customers">
+                                    <!--  Nest here please                                      -->
                                     </v-list-item>
 
                                 </Link>
 
+
+                            <v-list-group
+                                class="hidden"
+                                prepend-icon="mdi-account-circle"
+                                value="Customers">
+                                <template v-slot:activator="{ props }">
+                                    <v-list-item
+                                        v-bind="props"
+                                        title="Admin"
+                                        prepend-icon="mdi-account-circle"
+                                    ></v-list-item>
+
+                                </template>
+
+                                <v-list-item
+
+
+                                    :value="'title'"
+                                >
+                                    <template v-slot:title>
+                                       <div class="flex items-center gap-1">
+                                           <v-icon>
+                                               mdi-account-circle
+                                           </v-icon> Title
+                                       </div>
+                                    </template>
+                                </v-list-item>
+                            </v-list-group>
 
                             <Link href="/contract/create">
                                 <v-list-item prepend-icon="mdi-file-document" title="Contracts" value="contracts">
@@ -270,7 +305,7 @@ import { Link } from '@inertiajs/vue3';
                     </v-navigation-drawer>
 
                     <v-main
-                    class="w-full"
+                    class="w-screen"
                     >
 
 
