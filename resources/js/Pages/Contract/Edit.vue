@@ -1,33 +1,55 @@
 <script setup xmlns="http://www.w3.org/1999/html">
 
-import {inject, onMounted, ref} from "vue";
+import {computed, inject, onMounted, ref} from "vue";
 
 import {useForm} from "@inertiajs/vue3";
 import CreateCycle from "@/Pages/Cycle/Create.vue";
-const formData = useForm({
-//create form and v-model the elements
-    title: null,
-    make:"",
-    client_id:"",
-    notes:null,
-    prod_year:"",
-    type:"Auto",
-    model:"",
-    regno:null,
-    pnum:null,
-    lic_exp:null
-});
+// const formData = useForm({
+// //create form and v-model the elements
+//     title: null,
+//     make:"",
+//     client:"",
+//     notes:null,
+//     prod_year:"",
+//     type:"Auto",
+//     model:"",
+//     regno:null,
+//     pnum:null,
+//     lic_exp:null
+// });
 
-let props = defineProps({
+
+const props = defineProps({
 
     makes:Array,
-    models:Array
+    models:Array,
+    contract: Object
 
 })
+
+
+const formData = useForm({
+//create form and v-model the elements
+    title: props.contract.title,
+    make:props.contract.make ?? "",
+    client_id:props.contract.client_id ?? "",
+    notes:props.contract.notes ?? null,
+    prod_year:props.contract.prod_year ?? "",
+    type: props.contract.type ?? "Auto",
+    model:props.contract.model ?? "",
+    regno:props.contract.regno ?? null,
+    pnum:props.contract.pnum ?? null,
+    lic_exp:props.contract.lic_exp ?? null
+});
+
 
 const customers=ref([])
 const searchQuery = ref('')
 const customersLoading = ref(false)
+const customersComputed = computed(() => {
+    return customers.value.concat(props.contract.customer);
+
+})
 function fetchCustomers() {
     customersLoading.value=true
     axios.get(`/customers?search=${searchQuery.value}`).then(({data})=>{
@@ -76,7 +98,7 @@ function range(start, end) {
 
 const reset = () => formData.reset();
 
-const sendData = () => formData.post('/contract/store',{
+const sendData = () => formData.post(`/contract/update/${props.contract.id}`,{
     onSuccess: () => formData.reset()
 });
 
@@ -132,7 +154,7 @@ export default {
 
                                         <label class="label cursor-pointer">
                                             <span class="label-text">Auto</span>
-                                            <input type="radio" v-model="formData.type" class="bg-gray-100 checked: radio " value="Auto"  checked />
+                                            <input type="radio" v-model="formData.type" class="bg-gray-100 checked: radio " value="Auto"   />
                                         </label>
 
                                         <label class="label cursor-pointer">
@@ -162,8 +184,8 @@ export default {
                                             @update:search="onSearch"
                                             @keyup.enter="fetchCustomers"
                                             label="Search for a Customer and hit Enter"
-                                            :items="customers"
-                                            item-title="text"
+                                            :items="customersComputed"
+                                            item-title="name"
                                             :loading="customersLoading"
                                             item-value="id"
                                             v-model="formData.client_id"

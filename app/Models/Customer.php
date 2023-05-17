@@ -25,7 +25,9 @@ class Customer extends Model
     public function scopeFilter(Builder $query, array $filters): Builder
     {
         return $query->when($filters['name'] ?? false, fn ($query, $value) => $query->where('name', 'LIKE', '%'.$value.'%'))
-            ->when($filters['type'] ?? false, fn ($query, $value) => $query->where('type', $value));
+            ->when($filters['type'] ?? false, fn ($query, $value) => $query->where('type', $value))
+            ->when($filters['risk_level'] ?? false, fn ($query, $value) => $query->where('risk_level', (int)$value));
+
     }
 
 }

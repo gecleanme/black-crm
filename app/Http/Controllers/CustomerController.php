@@ -14,8 +14,9 @@ class CustomerController extends Controller
      */
     public function index(Request $request)
     {
+        //dd(Customer::query()->latest()->first());
 
-        $filters= $request->only(['name','type']);
+        $filters= $request->only(['name','type', 'risk_level']);
         $types = ['Business', 'Individual'];
 
          $query=Customer::query()
@@ -80,7 +81,10 @@ class CustomerController extends Controller
      */
     public function edit(Customer $customer)
     {
-        //
+        return Inertia::render('Customer/Edit',[
+            'customer' => $customer
+        ]);
+
     }
 
     /**
@@ -88,7 +92,22 @@ class CustomerController extends Controller
      */
     public function update(Request $request, Customer $customer)
     {
-        //
+        $customer->update($request->validate([
+            'name' => 'required|string|min:2|max:20',
+            'cell'  => 'required|string|min:10|max:14',
+            'sex' => 'required|string',
+            'vip' => 'required|boolean',
+            'type' => 'required|string',
+            'risk_level' => 'nullable|integer',
+            'ref' => 'string|nullable',
+            'dob' => 'date|nullable',
+            'secondary_phone' => 'nullable|string|min:10|max:14',
+            'notes' => 'string|nullable|min:3|max:400'
+
+        ]));
+
+        return redirect('/customers');
+
     }
 
     /**

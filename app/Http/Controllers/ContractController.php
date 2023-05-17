@@ -44,7 +44,7 @@ class ContractController extends Controller
     public function store(Request $request)
     {
        $contract = Contract::create($request->validate([
-            'client' => 'required',
+            'client_id' => 'required',
             'type' => 'required',
             'make' => 'required_if:type,"Auto"',
             'notes' => 'nullable|min:5|max:500',
@@ -75,7 +75,12 @@ class ContractController extends Controller
      */
     public function edit(Contract $contract)
     {
-        //
+        return Inertia::render('Contract/Edit',[
+            'makes' => Contract::MAKES,
+            'models' => Contract::MODELS,
+            'contract' => $contract->load(['customer'])
+        ]);
+
     }
 
     /**
@@ -83,7 +88,22 @@ class ContractController extends Controller
      */
     public function update(Request $request, Contract $contract)
     {
-        //
+        $contract->update($request->validate([
+            'client_id' => 'required',
+            'type' => 'required',
+            'make' => 'required_if:type,"Auto"',
+            'notes' => 'nullable|min:5|max:500',
+            'prod_year' => 'required_if:type,"Auto"',
+            'model' => 'required_if:type,"Auto"',
+            'regno' => 'nullable',
+            'pnum' => 'nullable',
+            'lic_exp' => 'nullable',
+            'title' => 'required|string|min:3|max:20'
+
+        ]));
+
+
+        return redirect('/customers');
     }
 
     /**

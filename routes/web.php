@@ -43,8 +43,14 @@ require __DIR__.'/auth.php';
 Route::get('/customers', [CustomerController::class, 'index']);
 Route::get('/customer/create', [CustomerController::class, 'create']);
 Route::post('/customer/store', [CustomerController::class, 'store']);
+Route::get('/customer/edit/{customer}', [CustomerController::class, 'edit']);
+Route::put('/customer/update/{customer}', [CustomerController::class, 'update']);
+
+
 
 Route::get('/contract/create', [ContractController::class, 'create']);
+Route::get('/contract/edit/{contract}', [ContractController::class, 'edit']);
+Route::put('/contract/update/{contract}', [ContractController::class, 'store']);
 Route::post('/contract/store', [ContractController::class, 'store']);
 
 Route::get('/cycle/create', [ContractCycleController::class, 'create'])->name('cycles.create');

@@ -49,6 +49,24 @@
                         <option v-for="(reporter, index) in reporters.data" :key="index" :value="reporter.id">{{reporter.name}}</option>
                     </select>
                     -->
+                    <select class=" w-full sm:w-40 px-5 py-3 text-gray-700 border
+                        border-gray-400 rounded-md appearance-none
+                        focus:outline-none focus:ring-2 focus:ring-blue-400
+                        focus:border-transparent"
+                            v-model="props.risk_level"
+                    >
+                        <option value="" selected>Risk Level</option>
+                        <option value="0"> Very Low </option>
+                        <option value="25"> Low </option>
+                        <option value="50"> Moderate </option>
+                        <option value="75"> High </option>
+                        <option value="100"> Very High </option>
+
+
+
+
+                    </select>
+
 
 
                     <input type="text" class="w-full sm:w-auto px-3 py-2 text-gray-700 border border-gray-400
@@ -87,7 +105,8 @@ let props=null;
     props = useForm({
 
         type: data.filters.type ?? "",
-        name: data.filters.name ?? null
+        name: data.filters.name ?? null,
+        risk_level: data.filters.risk_level ?? ""
     });
 
 
