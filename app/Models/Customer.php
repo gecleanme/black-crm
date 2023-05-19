@@ -28,6 +28,7 @@ class Customer extends Model
             ->when($filters['type'] ?? false, fn ($query, $value) => $query->where('type', $value))
             ->when($filters['risk_level'] ?? false, fn ($query, $value) => $query->where('risk_level', (int)$value));
 
+
     }
 
 }

@@ -1,9 +1,10 @@
 <script setup>
 
 import TablePagination from "@/Components/TablePagination.vue";
-
+import FilterFormContracts from "@/Components/FilterFormContracts.vue";
 const props = defineProps({
-    contracts: Object
+    contracts: Object,
+    filters: Array
 })
 
 
@@ -12,10 +13,12 @@ const props = defineProps({
 <template>
     <h2 class="font-semibold text-3xl text-gray-600 m-4 p-2">Contracts</h2>
     <div class="overflow-x-auto">
+        <FilterFormContracts :filters="props.filters"></FilterFormContracts>
         <div class="w-full sm:max-w-2xl md:max-w-4xl lg:max-w-6xl mx-auto">
             <table class="table-auto text-left text-xs sm:text-sm font-light mx-auto md:min-w-full">
                 <thead class="border-b font-medium bg-gray-100">
                 <tr>
+                    <th scope="col" class="px-6 py-4">Title</th>
                     <th scope="col" class="px-6 py-4">Starts</th>
                     <th scope="col" class="px-6 py-4">Ends</th>
                     <th scope="col" class="px-6 py-4">Customer</th>
@@ -26,8 +29,9 @@ const props = defineProps({
                 <tr v-if="!contracts" class="mt-4">
                     <td colspan="4" rowspan="5" class="text-sm text-gray-500 uppercase p-4 m-4 text-center">No Contracts Found</td>
                 </tr>
-                <tr v-else v-for="(contract,index) in contracts.data" :key="contract.id"
+                <tr v-else v-for="contract in contracts.data" :key="contract.id"
                     class="border-b transition duration-300 ease-in-out hover:bg-neutral-100">
+                    <td class="truncate px-6 py-4 font-medium">{{contract.title}}</td>
                     <td class="truncate px-6 py-4 font-medium">{{contract.last_cycle.start_date}}</td>
                     <td class="truncate px-6 py-4">{{contract.last_cycle.end_date}}</td>
                     <td class="truncate px-6 py-4">{{contract.customer.name}}</td>

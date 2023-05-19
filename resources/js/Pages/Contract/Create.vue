@@ -163,7 +163,7 @@ export default {
                                             @keyup.enter="fetchCustomers"
                                             label="Search for a Customer and hit Enter"
                                             :items="customers"
-                                            item-title="text"
+                                            item-title="name"
                                             :loading="customersLoading"
                                             item-value="id"
                                             v-model="formData.client_id"

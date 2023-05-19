@@ -11,15 +11,17 @@ class ContractController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
 
+        $filters= $request->only(['title','value', 'cycle_value','premium','ends_within']);
+
         $contracts= Contract::with(['cycles','customer'])
-            ->whereHas('cycles')
-            ->paginate(10);
+            ->whereHas('cycles')->latest()->filter($filters)->paginate(10)->withQueryString();
 
         return Inertia::render('Contract/Index',[
             'contracts'=>$contracts,
+            'filters' => $filters
 
         ]);
 
