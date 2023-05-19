@@ -49,23 +49,19 @@
                         <option v-for="(reporter, index) in reporters.data" :key="index" :value="reporter.id">{{reporter.name}}</option>
                     </select>
                     -->
-<!--                    <select class=" w-full sm:w-40 px-5 py-3 text-gray-700 border-->
-<!--                        border-gray-400 rounded-md appearance-none-->
-<!--                        focus:outline-none focus:ring-2 focus:ring-blue-400-->
-<!--                        focus:border-transparent"-->
-<!--                            v-model="props.risk_level"-->
-<!--                    >-->
-<!--                        <option value="" selected>Risk Level</option>-->
-<!--                        <option value="0"> Very Low </option>-->
-<!--                        <option value="25"> Low </option>-->
-<!--                        <option value="50"> Moderate </option>-->
-<!--                        <option value="75"> High </option>-->
-<!--                        <option value="100"> Very High </option>-->
+                    <select class=" w-full sm:w-40 px-5 py-3 text-gray-700 border
+                        border-gray-400 rounded-md appearance-none
+                        focus:outline-none focus:ring-2 focus:ring-blue-400
+                        focus:border-transparent"
+                            v-model="props.type"
+                    >
+                        <option value="" selected>Select Type</option>
+                        <option value="Auto"> Auto </option>
+                        <option value="Health"> Health </option>
+                        <option value="Naval"> Naval </option>
+                        <option value="Travel"> Travel </option>
 
-
-
-
-<!--                    </select>-->
+                    </select>
 
 
 
@@ -93,6 +89,16 @@
                            v-model="props.ends_within"
                     >
 
+                    <div class="mt-4 mx-2">
+                    <label for="checkbox">Active Contracts</label>
+                    <input
+                        type="checkbox"
+                        class="mx-2 before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-500 checked:bg-black checked:before:bg-black hover:before:opacity-10"
+                        id="checkbox"
+                        v-model="props.is_active"
+                        :checked = props.is_active
+                    />
+                    </div>
 
                 </div>
                 <div class="flex justify-center gap-2 mt-0 w-full sm:w-auto">
@@ -121,9 +127,12 @@ let props=null;
     props = useForm({
 
         title: data.filters.title ?? null,
-        cycle_value : data.filters.cycle_value,
-        premium: data.filters.premium,
-        ends_within: data.filters.ends_within
+        cycle_value : data.filters.cycle_value ?? null,
+        premium: data.filters.premium ?? null,
+        ends_within: data.filters.ends_within ?? null,
+        type: data.filters.type ?? "",
+        is_active: data.filters.is_active ?? false
+
     });
 
 
