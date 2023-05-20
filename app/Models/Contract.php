@@ -52,7 +52,7 @@ class Contract extends Model
 
     public function cycles()
     {
-        return $this->hasMany(ContractCycle::class,'contract_id');
+        return $this->hasMany(ContractCycle::class,'contract_id')->orderBy('created_at','desc');
     }
 
     public function customer(){
@@ -64,47 +64,44 @@ class Contract extends Model
     }
 
 
+
+
+
     public function scopeFilter(Builder $query, array $filters): Builder
     {
-        return $query->when($filters['title'] ?? false, function ($query, $value) {
-            $query->where('title', 'LIKE', '%'.$value.'%');
-        })->when($filters['cycle_value'] ?? false, function ($query, $value) {
-            $query->whereExists(function ($subQuery) use ($value) {
-                $subQuery->selectRaw('value')
-                    ->from('contract_cycles')
-                    ->whereColumn('contract_cycles.contract_id', 'contracts.id')
-                    ->where('contract_cycles.value', '>', $value)
-                    ->whereRaw('contract_cycles.id = (SELECT max(id) FROM contract_cycles WHERE contract_id = contracts.id)');
+        return $query
+            ->when(isset($filters['title']), function (Builder $query) use ($filters) {
+                $query->where('title', 'LIKE', '%' . $filters['title'] . '%');
+            })
+            ->when(isset($filters['cycle_value']), function (Builder $query) use ($filters) {
+                $query->whereHas('cycles', function (Builder $subQuery) use ($filters) {
+                    $subQuery->where('value', '>', $filters['cycle_value']);
+                })->take(1);
+            })
+            ->when(isset($filters['premium']), function (Builder $query) use ($filters) {
+                $query->whereHas('cycles', function (Builder $subQuery) use ($filters) {
+                    $subQuery->where('premium', '>', $filters['premium']);
+                })->take(1);
+            })
+            ->when(isset($filters['ends_within']), function (Builder $query) use ($filters) {
+                $endDate = now()->addDays((int) $filters['ends_within'])->format('Y-m-d');
+                $query->whereHas('cycles', function (Builder $subQuery) use ($endDate) {
+                    $subQuery->where('end_date', '>=', $endDate);
+                })->take(1);
+            })
+            ->when(isset($filters['type']), function (Builder $query) use ($filters) {
+                $query->where('type', $filters['type']);
+            })
+            ->when(isset($filters['is_active']), function (Builder $query) {
+                $query->whereHas('cycles', function (Builder $subQuery) {
+                    $subQuery->whereDate('end_date', '>=', now());
+                })->take(1);
+            })
+            ->when(isset($filters['client']), function (Builder $query) use ($filters) {
+                $query->where('client_id', $filters['client']);
             });
-        })->when($filters['premium'] ?? false, function ($query, $value) {
-            $query->whereExists(function ($subQuery) use ($value) {
-                $subQuery->selectRaw('premium')
-                    ->from('contract_cycles')
-                    ->whereColumn('contract_cycles.contract_id', 'contracts.id')
-                    ->where('contract_cycles.premium', '>', $value)
-                    ->whereRaw('contract_cycles.id = (SELECT max(id) FROM contract_cycles WHERE contract_id = contracts.id)');
-            });
-        })->when($filters['ends_within'] ?? false, function ($query, $value) {
-            $endDate = now()->addDays((int) $value)->format('Y-m-d');
-            $query->whereExists(function ($subQuery) use ($endDate) {
-                $subQuery->select('end_date')
-                    ->from('contract_cycles')
-                    ->whereColumn('contract_cycles.contract_id', 'contracts.id')
-                    ->whereDate('end_date', '>=', $endDate)
-                    ->whereRaw('contract_cycles.id = (SELECT max(id) FROM contract_cycles WHERE contract_id = contracts.id)');
-            });
-        })->when($filters['type'] ?? false, fn($query, $value) => $query->where('type', $value))
-
-            ->when($filters['is_active'] ?? false, function ($query, $value){
-                $query->whereExists(function ($subQuery){
-                    $subQuery->select('end_date')
-                        ->from('contract_cycles')
-                        ->whereColumn('contract_cycles.contract_id', 'contracts.id')
-                        ->whereDate('end_date', '>=', now())
-                        ->whereRaw('contract_cycles.id = (SELECT max(id) FROM contract_cycles WHERE contract_id = contracts.id)');
-                });
-            })->when($filters['client'] ?? false , fn($query,$value) => $query->where('client_id', $value));
     }
+
 
 
 }
