@@ -103,7 +103,7 @@ class Contract extends Model
                         ->whereDate('end_date', '>=', now())
                         ->whereRaw('contract_cycles.id = (SELECT max(id) FROM contract_cycles WHERE contract_id = contracts.id)');
                 });
-            });
+            })->when($filters['client'] ?? false , fn($query,$value) => $query->where('client_id', $value));
     }
 
 

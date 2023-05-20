@@ -14,7 +14,7 @@ class ContractController extends Controller
     public function index(Request $request)
     {
 
-        $filters= $request->only(['title','value', 'cycle_value','premium','ends_within','type','is_active']);
+        $filters= $request->only(['title','value', 'cycle_value','premium','ends_within','type','is_active', 'client']);
 
         $contracts= Contract::with(['cycles','customer'])
             ->whereHas('cycles')->latest()->filter($filters)->paginate(10)->withQueryString();

@@ -27,7 +27,7 @@ class ContractFactory extends Factory
             'regno' => fake()->word,
             'pnum' => fake()->word,
             'lic_exp' => fake()->date,
-            'title' => fake()->word()
+            'title' => fake()->word
 
         ];
     }

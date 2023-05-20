@@ -21,6 +21,9 @@ const props = defineProps({
                     <th scope="col" class="px-6 py-4">Title</th>
                     <th scope="col" class="px-6 py-4">Starts</th>
                     <th scope="col" class="px-6 py-4">Ends</th>
+                    <th scope="col" class="px-6 py-4">Value</th>
+                    <th scope="col" class="px-6 py-4">Premium</th>
+
                     <th scope="col" class="px-6 py-4">Customer</th>
                     <th scope="col" class="px-6 py-4">Type</th>
                 </tr>
@@ -34,6 +37,9 @@ const props = defineProps({
                     <td class="truncate px-6 py-4 font-medium">{{contract.title}}</td>
                     <td class="truncate px-6 py-4 font-medium">{{contract.last_cycle.start_date}}</td>
                     <td class="truncate px-6 py-4">{{contract.last_cycle.end_date}}</td>
+                    <td class="truncate px-6 py-4">{{contract.last_cycle.value}}</td>
+                    <td class="truncate px-6 py-4">{{contract.last_cycle.premium}}</td>
+
                     <td class="truncate px-6 py-4">{{contract.customer.name}}</td>
                     <td class="truncate px-6 py-4">{{contract.type}}
 <!--                        <div class="flex space-x-1">-->

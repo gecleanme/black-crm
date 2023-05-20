@@ -22,6 +22,7 @@
         "daisyui": "^2.51.6",
         "jquery": "^3.7.0",
         "vue3-select2-component": "^0.1.7",
-        "vuetify": "^3.2.2"
+        "vuetify": "^3.2.2",
+        "ziggy-js": "^1.6.0"
     }
 }

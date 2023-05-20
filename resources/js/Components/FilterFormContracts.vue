@@ -71,6 +71,8 @@
                            v-model="props.title"
                     >
 
+
+
                     <input type="number" class=" w-full sm:w-auto px-3 py-2 text-gray-700 border border-gray-400
                     rounded-md appearance-none focus:outline-none focus:ring-2
                     focus:ring-blue-400 focus:border-transparent" placeholder="Value Greater than"
@@ -89,6 +91,7 @@
                            v-model="props.ends_within"
                     >
 
+                    <!--
                     <div class="mt-4 mx-2">
                     <label for="checkbox">Active Contracts</label>
                     <input
@@ -99,6 +102,20 @@
                         :checked = props.is_active
                     />
                     </div>
+                    -->
+
+                    <v-autocomplete
+                        clearable
+                        @update:search="onSearch"
+                        @keyup.enter="fetchCustomers"
+                        label="Search for a Customer and hit Enter"
+                        :items="customers"
+                        item-title="name"
+                        :loading="customersLoading"
+                        item-value="id"
+                        v-model="props.client"
+                    ></v-autocomplete>
+
 
                 </div>
                 <div class="flex justify-center gap-2 mt-0 w-full sm:w-auto">
@@ -113,8 +130,9 @@
 
 <script setup>
 
-import {useForm, usePage} from "@inertiajs/vue3";
-import {ref ,inject} from "vue";
+import {useForm, usePage,router} from "@inertiajs/vue3";
+import {ref, inject, computed} from "vue";
+import route from "ziggy-js/src/js";
 
 
 const data =defineProps({
@@ -126,17 +144,37 @@ let props=null;
 
     props = useForm({
 
-        title: data.filters.title ?? null,
-        cycle_value : data.filters.cycle_value ?? null,
-        premium: data.filters.premium ?? null,
-        ends_within: data.filters.ends_within ?? null,
+        title: data.filters.title ,
+        cycle_value : data.filters.cycle_value,
+        premium: data.filters.premium,
+        ends_within: data.filters.ends_within,
+        // new
         type: data.filters.type ?? "",
-        is_active: data.filters.is_active ?? false
+        // is_active: data.filters.is_active ?? false,
+        client: data.filters.client
 
     });
 
 
-const clear = () => props.reset();
+const customers=ref([])
+const searchQuery = ref('')
+const customersLoading = ref(false)
+function fetchCustomers() {
+    customersLoading.value=true
+    axios.get(`/customers?search=${searchQuery.value}`).then(({data})=>{
+        customers.value=data.data
+    }).finally(()=>{
+        customersLoading.value=false
+    })
+}
+
+function onSearch(q) {
+    searchQuery.value=q;
+}
+
+
+
+const clear = () => router.visit(route(route().current()))
 
 const filter = () => props.get('/contracts',{
    preserveScroll:true,
@@ -150,7 +188,7 @@ const filter = () => props.get('/contracts',{
 
 <script>
 export default {
-    name: "FilterForm"
+    name: "FilterFormContracts"
 }
 </script>
 
