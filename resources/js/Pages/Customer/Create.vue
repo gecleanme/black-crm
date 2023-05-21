@@ -16,7 +16,9 @@ const formData = useForm({
     ref:null,
     dob:null,
     secondary_phone:null,
-    risk_level:parseInt("25")
+    risk_level:parseInt("25"),
+    attachments : []
+
 
 });
 
@@ -26,6 +28,15 @@ const setVip = () => {
     vip.value = !vip.value;
     formData.vip = vip.value;
 };
+
+const packFiles = (event) => {
+    //console.log(event.target.files)
+    for (const att of event.target.files) {
+        formData.attachments.push(att);
+        //console.log(formData.attachments)
+    }
+};
+
 
 const reset = () => formData.reset();
 
@@ -154,6 +165,32 @@ export default {
                                         <textarea id="textarea" v-model="formData.notes" type="textarea" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring"></textarea>
                                         <p v-if="formData.errors.notes" class="text-sm text-red-500 font-semibold">{{formData.errors.notes}}</p>
 
+                                    </div>
+
+
+                                    <div class="md:col-span-6">
+                                        <label class="block text-sm font-medium text-black">
+                                            Attachments
+                                        </label>
+
+                                        <div class="flex text-sm text-gray-600">
+                                            <label for="file-upload" class="p-2 mt-2 relative cursor-pointer bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
+                                                <span class="text-center mx-auto">Upload a media file</span>
+                                                <input multiple id="file-upload" type="file" @input="packFiles" class="p-2 mt-2 sr-only" accept=".jpg,.png,.mp4"/>
+
+                                            </label>
+                                            <span class="text-sm text-black mt-4 ml-1" v-if="formData.attachments.length">
+                                               {{formData.attachments.length}} File(s) Uploaded!
+                                            </span>
+
+
+
+
+
+                                        </div>
+                                        <p class="text-xs text-black m-2">
+                                            PNG, JPG, MP4
+                                        </p>
                                     </div>
 
 

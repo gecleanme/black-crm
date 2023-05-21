@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\ContractCycleController;
 use App\Http\Controllers\CustomerController;
@@ -45,6 +46,7 @@ Route::get('/customer/create', [CustomerController::class, 'create']);
 Route::post('/customer/store', [CustomerController::class, 'store']);
 Route::get('/customer/edit/{customer}', [CustomerController::class, 'edit']);
 Route::put('/customer/update/{customer}', [CustomerController::class, 'update']);
+Route::delete('/del/attachments/{attachment:attachable_id}', [AttachmentController::class, 'destroy'])->name('attachments.destroy');
 
 
 

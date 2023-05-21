@@ -2,6 +2,7 @@
 
 import TablePagination from "@/Components/TablePagination.vue";
 import FilterForm from "@/Components/FilterForm.vue";
+import {Link} from "@inertiajs/vue3";
 
 const props = defineProps({
     customers: Object,
@@ -34,7 +35,8 @@ const props = defineProps({
                 </tr>
                 <tr v-else v-for="customer in customers.data" :key="customer.id"
                     class="border-b transition duration-300 ease-in-out hover:bg-neutral-100">
-                    <td class="truncate px-6 py-4 font-medium">{{customer.name}}</td>
+                    <td class="truncate px-6 py-4 font-medium"> <Link :href="`/customer/edit/${customer.id}`">{{ customer.name }}</Link>
+                    </td>
                     <td class="truncate px-6 py-4">{{customer.cell}}</td>
                     <td class="truncate px-6 py-4">{{customer.notes}}</td>
                     <td class="truncate px-6 py-4">

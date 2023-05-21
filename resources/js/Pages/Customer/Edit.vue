@@ -3,7 +3,7 @@
 import {ref} from "vue";
 
 
-import {useForm} from "@inertiajs/vue3";
+import {useForm, Link} from "@inertiajs/vue3";
 
 const props = defineProps({
     customer: Object
@@ -12,6 +12,7 @@ const props = defineProps({
 
 const formData = useForm({
 //create form and v-model the elements
+    _method: 'put',
     name: props.customer.name,
     notes:props.customer.notes ?? null,
     sex:props.customer.sex,
@@ -21,7 +22,8 @@ const formData = useForm({
     ref:props.customer.ref ?? null,
     dob:props.customer.dob ?? null,
     secondary_phone:props.customer.secondary_phone ?? null,
-    risk_level:props.customer.risk_level ?? parseInt("25")
+    risk_level:props.customer.risk_level ?? parseInt("25"),
+    attachments: []
 
 });
 
@@ -32,9 +34,18 @@ const setVip = () => {
     formData.vip = vip.value;
 };
 
+const packFiles = (event) => {
+    //console.log(event.target.files)
+    for (const att of event.target.files) {
+        formData.attachments.push(att);
+        //console.log(formData.attachments)
+    }
+};
+
+
 const reset = () => formData.reset();
 
-const updateData = () => formData.put(`/customer/update/${props.customer.id}`,{
+const updateData = () => formData.post(`/customer/update/${props.customer.id}`,{
     onSuccess: () => formData.reset()
 });
 </script>
@@ -162,8 +173,47 @@ export default {
                                     </div>
 
 
+                                    <div class="md:col-span-6">
+                                        <label class="block text-sm font-medium text-black">
+                                            Attachments ({{customer.attachment_urls.length}})
+                                        </label>
+
+                                        <div class="flex flex-col w-full lg:flex-row my-2">
+                                            <div  v-for="attachment in customer.attachment_urls"  class="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center"><a  target="_blank" :href="attachment" class="btn btn-ghost" as="button">Preview {{attachment.includes('.jpg') || attachment.includes('.png') ? ' Image' :' Video'}}</a>
+                                            </div>
+
+                                            <Link v-for="attachment in customer.attachments"
+                                                  class="inline-block rounded bg-error px-6 pt-2.5 pb-2 text-xs font-medium leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] bg-black text-white hover:bg-gray-800"
+                                                  :href="`/del/attachments/${attachment.attachable_id}`"
+                                                  method="delete"
+                                                  as="button"
+                                            >Delete</Link>
 
 
+                                        </div>
+
+                                        <div class="flex text-sm text-gray-600">
+                                            <label for="file-upload" class="p-2 mt-2 relative cursor-pointer bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
+                                                <span class="text-center mx-auto">Upload a media file</span>
+                                                <input multiple id="file-upload" type="file" @input="packFiles" class="p-2 mt-2 sr-only" accept=".jpg,.png,.mp4"/>
+
+                                            </label>
+                                            <span class="text-sm text-black mt-4 ml-1" v-if="formData.attachments.length">
+                                               {{formData.attachments.length}} File(s) Uploaded!
+                                            </span>
+
+
+
+
+
+                                        </div>
+                                        <p class="text-xs text-black m-2">
+                                            PNG, JPG, MP4
+                                        </p>
+
+
+
+                                    </div>
 
 
 

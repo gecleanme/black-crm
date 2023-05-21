@@ -51,7 +51,7 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        Customer::create($request->validate([
+        $customer= Customer::create($request->validate([
            'name' => 'required|string|min:2|max:20',
            'cell'  => 'required|string|min:10|max:14',
             'sex' => 'required|string',
@@ -64,6 +64,15 @@ class CustomerController extends Controller
             'notes' => 'string|nullable|min:3|max:400'
 
         ]));
+
+        if ($request->hasFile('attachments')){
+            foreach ($request->file('attachments') as $file){
+                $attachments = $file->store('attachments', 'public');
+                $customer->attachments()->create([
+                    'attachments' => $attachments
+                ]);
+            }
+        }
 
 
     }
@@ -81,6 +90,7 @@ class CustomerController extends Controller
      */
     public function edit(Customer $customer)
     {
+        $customer->load('attachments');
         return Inertia::render('Customer/Edit',[
             'customer' => $customer
         ]);
@@ -105,6 +115,16 @@ class CustomerController extends Controller
             'notes' => 'string|nullable|min:3|max:400'
 
         ]));
+
+        if ($request->hasFile('attachments')){
+            foreach ($request->file('attachments') as $file){
+                $attachments = $file->store('attachments', 'public');
+                $customer->attachments()->create([
+                    'attachments' => $attachments
+                ]);
+            }
+        }
+
 
         return redirect('/customers');
 

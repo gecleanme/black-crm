@@ -64,14 +64,12 @@ const formData = useForm({
 
 
 const packFiles = (event) => {
-        console.log(event.target.files)
+        //console.log(event.target.files)
     for (const att of event.target.files) {
         formData.attachments.push(att);
-        console.log(formData.attachments)
+        //console.log(formData.attachments)
     }
-}
-
-;
+};
 
 
 
