@@ -4,6 +4,7 @@ import {ref} from "vue";
 
 
 import {useForm, Link} from "@inertiajs/vue3";
+import ConfrimDelete from "@/Components/ConfrimDelete.vue";
 
 const props = defineProps({
     customer: Object
@@ -175,20 +176,14 @@ export default {
 
                                     <div class="md:col-span-6">
                                         <label class="block text-sm font-medium text-black">
-                                            Attachments ({{customer.attachment_urls.length}})
+                                            Attachments ({{customer.attachments.length}})
                                         </label>
 
                                         <div class="flex flex-col w-full lg:flex-row my-2" v-for="attachment in customer.attachments">
-                                            <div class="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center"><a  target="_blank" :href="attachment" class="btn btn-ghost" as="button">Preview</a>
+                                            <div class="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center"><a  target="_blank" :href="`http://localhost:8000/storage/${attachment.attachments}`" class="btn btn-ghost" as="button">Preview</a>
                                             </div>
 
-                                            <Link
-                                                  class="inline-block rounded bg-error px-6 pt-2.5 pb-2 text-xs font-medium leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] bg-black text-white hover:bg-gray-800"
-                                                  :href="`/del/attachments/${attachment.attachable_id}`"
-                                                  method="delete"
-                                                  as="button"
-                                            >Delete</Link>
-
+                                            <ConfrimDelete :attachment="attachment"/>
 
                                         </div>
 

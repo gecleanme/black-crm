@@ -93,7 +93,11 @@ class ContractCycleController extends Controller
      */
     public function edit(ContractCycle $contractCycle)
     {
-        //
+        $contractCycle->load('attachments');
+        return Inertia::render('Cycle/Edit', [
+            'cycle' => $contractCycle
+        ]);
+
     }
 
     /**
@@ -101,7 +105,39 @@ class ContractCycleController extends Controller
      */
     public function update(Request $request, ContractCycle $contractCycle)
     {
-        //
+        $validatedData = $request->validate([
+            'value' => 'required',
+            'premium' => 'required',
+            'notes' => 'nullable',
+            'vendor' => 'string',
+            'start_date' => ['required', 'date_format:Y-m-d'],
+            'end_date' => ['required', 'date_format:Y-m-d']
+        ]);
+
+        $startDate = Carbon::parse( $validatedData['start_date']);
+        $endDate = Carbon::parse( $validatedData['end_date']);
+
+        $contractCycle->update([
+            'value' => $validatedData['value'],
+            'premium' => $validatedData['premium'],
+            'notes' => $validatedData['notes'],
+            'vendor' => $validatedData['vendor'],
+            'start_date' => $startDate,
+            'end_date' => $endDate
+        ]);
+
+        if ($request->hasFile('attachments')){
+            foreach ($request->file('attachments') as $file){
+                $attachments = $file->store('attachments', 'public');
+                $contractCycle->attachments()->create([
+                    'attachments' => $attachments
+                ]);
+            }
+        }
+
+
+//        return redirect('contract/create')->with('success','asasas');
+
     }
 
     /**

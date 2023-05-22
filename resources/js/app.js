@@ -15,6 +15,8 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 
 const vuetify = createVuetify({
@@ -36,6 +38,7 @@ createInertiaApp({
             .use(plugin)
             .use(ZiggyVue, Ziggy)
             .use(vuetify)
+            .use(VueSweetalert2)
             .component('VueDatePicker', VueDatePicker)
             .mount(el);
     },

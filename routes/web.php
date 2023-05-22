@@ -46,7 +46,7 @@ Route::get('/customer/create', [CustomerController::class, 'create']);
 Route::post('/customer/store', [CustomerController::class, 'store']);
 Route::get('/customer/edit/{customer}', [CustomerController::class, 'edit']);
 Route::put('/customer/update/{customer}', [CustomerController::class, 'update']);
-Route::delete('/del/attachments/{attachment:attachable_id}', [AttachmentController::class, 'destroy'])->name('attachments.destroy');
+Route::delete('/del/attachments/{attachment}', [AttachmentController::class, 'destroy'])->name('attachments.destroy');
 
 
 
@@ -56,6 +56,10 @@ Route::put('/contract/update/{contract}', [ContractController::class, 'store']);
 Route::post('/contract/store', [ContractController::class, 'store']);
 
 Route::get('/cycle/create', [ContractCycleController::class, 'create'])->name('cycles.create');
+Route::get('/cycle/edit/{contractCycle}', [ContractCycleController::class, 'edit'])->name('cycles.edit');
+
 Route::post('/cycle/store', [ContractCycleController::class, 'store']);
+Route::put('/cycle/update/{contractCycle}', [ContractCycleController::class, 'update']);
+
 Route::get('/contracts', [ContractController::class, 'index'])->name('contract_idx');
 
