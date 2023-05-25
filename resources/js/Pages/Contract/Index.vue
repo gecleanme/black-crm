@@ -2,6 +2,8 @@
 
 import TablePagination from "@/Components/TablePagination.vue";
 import FilterFormContracts from "@/Components/FilterFormContracts.vue";
+import FlashSuccess from "@/Components/FlashSuccess.vue";
+import {Link} from "@inertiajs/vue3";
 const props = defineProps({
     contracts: Object,
     filters: Array
@@ -11,7 +13,14 @@ const props = defineProps({
 </script>
 
 <template>
-    <h2 class="font-semibold text-3xl text-gray-600 m-4 p-2">Contracts</h2>
+    <FlashSuccess/>
+    <div class="flex justify-between w-full">
+        <h2 class="font-semibold text-3xl text-gray-600 m-4 p-2">Contracts</h2>
+        <Link :href="`/contract/create`"
+              class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded disabled:bg-opacity-40 m-6"
+              as="button"
+        > Add Contract</Link>
+    </div>
     <div class="overflow-x-auto">
         <FilterFormContracts :filters="props.filters"></FilterFormContracts>
         <div class="w-full sm:max-w-2xl md:max-w-4xl lg:max-w-6xl mx-auto">
@@ -23,7 +32,6 @@ const props = defineProps({
                     <th scope="col" class="px-6 py-4">Ends</th>
                     <th scope="col" class="px-6 py-4">Value</th>
                     <th scope="col" class="px-6 py-4">Premium</th>
-
                     <th scope="col" class="px-6 py-4">Customer</th>
                     <th scope="col" class="px-6 py-4">Type</th>
                 </tr>
@@ -34,7 +42,7 @@ const props = defineProps({
                 </tr>
                 <tr v-else v-for="contract in contracts.data" :key="contract.id"
                     class="border-b transition duration-300 ease-in-out hover:bg-neutral-100">
-                    <td class="truncate px-6 py-4 font-medium">{{contract.title}}</td>
+                    <td class="truncate px-6 py-4 font-medium"> <Link :href="`/contract/edit/${contract.id}`"> {{contract.title}} </Link></td>
                     <td class="truncate px-6 py-4 font-medium">{{contract.last_cycle.start_date}}</td>
                     <td class="truncate px-6 py-4">{{contract.last_cycle.end_date}}</td>
                     <td class="truncate px-6 py-4">{{contract.last_cycle.value}}</td>

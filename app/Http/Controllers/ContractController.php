@@ -61,7 +61,7 @@ class ContractController extends Controller
 
        session(['contract_id'=> $contract->id]);
 
-        return redirect('/cycle/create');
+        return redirect('/cycle/create')->with('success', 'Success message');
     }
 
     /**
@@ -77,10 +77,12 @@ class ContractController extends Controller
      */
     public function edit(Contract $contract)
     {
+        session()->put('contract_id', $contract->id);
+
         return Inertia::render('Contract/Edit',[
             'makes' => Contract::MAKES,
             'models' => Contract::MODELS,
-            'contract' => $contract->load(['customer'])
+            'contract' => $contract->load(['customer','cycles'])
         ]);
 
     }
@@ -105,7 +107,7 @@ class ContractController extends Controller
         ]));
 
 
-        return redirect('/customers');
+        return redirect('/contracts')->with('success', 'Success message');
     }
 
     /**

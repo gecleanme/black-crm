@@ -6,6 +6,10 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import Layout from "@/Layouts/Layout.vue";
+import route from "ziggy-js/src/js";
+import ApplicationLogo from "@/Components/ApplicationLogo.vue";
+
 
 defineProps({
     canResetPassword: {
@@ -30,14 +34,15 @@ const submit = () => {
 </script>
 
 <template>
-    <GuestLayout>
         <Head title="Log in" />
-
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
+    <div class="flex h-screen items-center justify-center">
+    <div v-if="status" class="mb-4 font-medium text-sm text-green-600" >
             {{ status }}
         </div>
 
-        <form @submit.prevent="submit">
+        <form @submit.prevent="submit" class="md:w-1/4 xs:w-1/2">
+            <ApplicationLogo class="w-25 h-25 mx-auto"></ApplicationLogo>
+
             <div>
                 <InputLabel for="email" value="Email" />
 
@@ -90,5 +95,5 @@ const submit = () => {
                 </PrimaryButton>
             </div>
         </form>
-    </GuestLayout>
+        </div>
 </template>

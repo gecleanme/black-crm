@@ -58,5 +58,15 @@ class Customer extends Model
 
     }
 
-}
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleting(function ($customer) {
+            $customer->contracts()->delete();
+            $customer->attachments()->delete();
+        });
+    }
+
+    }
 

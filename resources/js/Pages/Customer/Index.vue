@@ -3,6 +3,7 @@
 import TablePagination from "@/Components/TablePagination.vue";
 import FilterForm from "@/Components/FilterForm.vue";
 import {Link} from "@inertiajs/vue3";
+import FlashSuccess from "@/Components/FlashSuccess.vue";
 
 const props = defineProps({
     customers: Object,
@@ -14,7 +15,14 @@ const props = defineProps({
 </script>
 
 <template>
+    <FlashSuccess/>
+    <div class="flex justify-between w-full">
     <h2 class="font-semibold text-3xl text-gray-600 m-4 p-2">Customers</h2>
+    <Link :href="`/customer/create`"
+          class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded disabled:bg-opacity-40 m-6"
+          as="button"
+    > Add Customer</Link>
+    </div>
     <div class="overflow-x-auto">
 
         <FilterForm :types="props.types" :filters="props.filters"></FilterForm>

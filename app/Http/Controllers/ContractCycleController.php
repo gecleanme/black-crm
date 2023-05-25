@@ -69,10 +69,11 @@ class ContractCycleController extends Controller
           }
       }
 
-        session()->forget('contract_id');
+        return redirect('/contract/edit/'.$latest_contract)->with('success','Success Message');
+
+       // session()->forget('contract_id');
 
 
-        return redirect('contract/create')->with('success','asasas');
 
 
 
@@ -95,7 +96,8 @@ class ContractCycleController extends Controller
     {
         $contractCycle->load('attachments');
         return Inertia::render('Cycle/Edit', [
-            'cycle' => $contractCycle
+            'cycle' => $contractCycle,
+            'url' => env('APP_URL')
         ]);
 
     }
@@ -136,7 +138,7 @@ class ContractCycleController extends Controller
         }
 
 
-//        return redirect('contract/create')->with('success','asasas');
+        return back()->with('success','Success Message');
 
     }
 

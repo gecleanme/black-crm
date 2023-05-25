@@ -29,9 +29,9 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+//Route::get('/dashboard', function () {
+//    return Inertia::render('Dashboard');
+//})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -41,25 +41,30 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('/customers', [CustomerController::class, 'index']);
-Route::get('/customer/create', [CustomerController::class, 'create']);
-Route::post('/customer/store', [CustomerController::class, 'store']);
-Route::get('/customer/edit/{customer}', [CustomerController::class, 'edit']);
-Route::put('/customer/update/{customer}', [CustomerController::class, 'update']);
-Route::delete('/del/attachments/{attachment}', [AttachmentController::class, 'destroy'])->name('attachments.destroy');
 
+//app routes start
 
+Route::middleware('auth')->group(function (){
 
-Route::get('/contract/create', [ContractController::class, 'create']);
-Route::get('/contract/edit/{contract}', [ContractController::class, 'edit']);
-Route::put('/contract/update/{contract}', [ContractController::class, 'store']);
-Route::post('/contract/store', [ContractController::class, 'store']);
+    Route::get('/customers', [CustomerController::class, 'index']);
+    Route::get('/customer/create', [CustomerController::class, 'create']);
+    Route::post('/customer/store', [CustomerController::class, 'store']);
+    Route::get('/customer/edit/{customer}', [CustomerController::class, 'edit']);
+    Route::put('/customer/update/{customer}', [CustomerController::class, 'update']);
+    Route::delete('/del/attachments/{attachment}', [AttachmentController::class, 'destroy'])->name('attachments.destroy');
 
-Route::get('/cycle/create', [ContractCycleController::class, 'create'])->name('cycles.create');
-Route::get('/cycle/edit/{contractCycle}', [ContractCycleController::class, 'edit'])->name('cycles.edit');
+    Route::get('/contract/create', [ContractController::class, 'create']);
+    Route::get('/contract/edit/{contract}', [ContractController::class, 'edit']);
+    Route::put('/contract/update/{contract}', [ContractController::class, 'update']);
+    Route::post('/contract/store', [ContractController::class, 'store']);
 
-Route::post('/cycle/store', [ContractCycleController::class, 'store']);
-Route::put('/cycle/update/{contractCycle}', [ContractCycleController::class, 'update']);
+    Route::get('/cycle/create', [ContractCycleController::class, 'create'])->name('cycles.create');
+    Route::get('/cycle/edit/{contractCycle}', [ContractCycleController::class, 'edit'])->name('cycles.edit');
 
-Route::get('/contracts', [ContractController::class, 'index'])->name('contract_idx');
+    Route::post('/cycle/store', [ContractCycleController::class, 'store']);
+    Route::put('/cycle/update/{contractCycle}', [ContractCycleController::class, 'update']);
+
+    Route::get('/contracts', [ContractController::class, 'index'])->name('contract_idx');
+
+});
 

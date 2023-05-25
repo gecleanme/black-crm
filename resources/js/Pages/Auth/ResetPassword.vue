@@ -1,10 +1,13 @@
 <script setup>
-import GuestLayout from '@/Layouts/Layout.vue';
+
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, useForm } from '@inertiajs/vue3';
+import ApplicationLogo from "@/Components/ApplicationLogo.vue";
+import route from "ziggy-js/src/js";
+
 
 const props = defineProps({
     email: {
@@ -32,11 +35,15 @@ const submit = () => {
 </script>
 
 <template>
-    <GuestLayout>
-        <Head title="Reset Password" />
 
-        <form @submit.prevent="submit">
-            <div>
+        <Head title="Reset Password" />
+    <div class="flex h-screen items-center justify-center">
+
+
+    <form @submit.prevent="submit" class="md:w-1/4 xs:w-1/2">
+        <ApplicationLogo class="w-25 h-25 mx-auto mb-4"></ApplicationLogo>
+
+        <div>
                 <InputLabel for="email" value="Email" />
 
                 <TextInput
@@ -88,5 +95,5 @@ const submit = () => {
                 </PrimaryButton>
             </div>
         </form>
-    </GuestLayout>
+    </div>
 </template>

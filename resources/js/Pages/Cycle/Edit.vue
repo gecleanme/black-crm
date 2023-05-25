@@ -6,7 +6,8 @@ import {Link, useForm} from "@inertiajs/vue3";
 import ConfrimDelete from "@/Components/ConfrimDelete.vue";
 
 const props = defineProps({
-    cycle: Object
+    cycle: Object,
+    url: String
 });
 
 let formattedStart;
@@ -203,7 +204,7 @@ export default {
                                         </label>
 
                                         <div class="flex flex-col w-full lg:flex-row my-2" v-for="attachment in cycle.attachments">
-                                            <div class="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center"><a  target="_blank" :href="`http://localhost:8000/storage/${attachment.attachments}`" class="btn btn-ghost" as="button">Preview</a>
+                                            <div class="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center"><a  target="_blank" :href="`${props.url}/storage/${attachment.attachments}`" class="btn btn-ghost" as="button">Preview</a>
                                             </div>
 
                                             <ConfrimDelete :attachment="attachment"/>
@@ -249,6 +250,7 @@ export default {
 
 
 
+
                                 </div>
                             </div>
                         </div>
@@ -258,6 +260,7 @@ export default {
         <!-- Template end   -->
 
     </form>
+
 </template>
 
 <style scoped>

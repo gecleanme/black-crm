@@ -239,7 +239,6 @@ const drawer = ref(null)
             <v-card>
                 <v-layout>
                     <v-app-bar-nav-icon variant="text" v-if="$vuetify.display.smAndDown" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-<!--                    move the icon somewhere else  just rewind, fk it-->
                     <v-navigation-drawer
                         v-model="drawer"
                         expand-on-hover
@@ -247,17 +246,19 @@ const drawer = ref(null)
                         class="bg-black"
                     >
                         <v-list color="">
+                            <Link :href="'/profile'">
                             <v-list-item
                                 prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-                                :title="$page.props.user?.name"
-                                :subtitle="$page.props.user?.email"
+                                :title="$page.props.auth.user?.name"
+                                :subtitle="$page.props.auth.user?.email"
                             ></v-list-item>
+                            </Link>
                         </v-list>
 
                         <v-divider></v-divider>
 
                         <v-list density="compact" nav>
-                                <Link href="/customer/create">
+                                <Link href="/customers/">
                                     <v-list-item prepend-icon="mdi-account-circle" title="Customers" value="customers">
                                     <!--  Nest here please                                      -->
                                     </v-list-item>
@@ -293,14 +294,17 @@ const drawer = ref(null)
                                 </v-list-item>
                             </v-list-group>
 
-                            <Link href="/contract/create">
+                            <Link href="/contracts">
                                 <v-list-item prepend-icon="mdi-file-document" title="Contracts" value="contracts">
                                 </v-list-item>
 
                             </Link>
-
-                            <v-list-item prepend-icon="mdi-account-multiple" title="Shared with me" value="shared"></v-list-item>
-                            <v-list-item prepend-icon="mdi-star" title="Starred" value="starred"></v-list-item>
+                        <Link href="/logout"
+                              method="post"
+                              as="button"
+                              >
+                            <v-list-item prepend-icon="mdi-logout" title="Logout" value="logout"></v-list-item>
+                        </Link>
                         </v-list>
                     </v-navigation-drawer>
 

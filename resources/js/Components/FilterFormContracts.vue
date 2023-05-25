@@ -1,8 +1,8 @@
 <template>
 
     <div class="flex flex-col justify-center items-center mt-6 mb-6 w-full md:w-3/4 lg:w-90 mx-auto xs:mb-6 py-2">
-        <form @submit.prevent="filter" class="flex flex-col items-center w-full px-4 py-8 rounded-lg shadow-md bg-gray-100">
-            <div class="flex flex-wrap justify-center gap-2 mb-8">
+        <form @submit.prevent="filter" class="flex flex-col items-center w-full px-2 py-4 rounded-lg shadow-md bg-gray-100">
+            <div class="flex flex-wrap justify-center gap-2 mb-4">
                 <div class="flex flex-wrap gap-2 w-full sm:w-auto">
 <!--                    <select class=" w-full sm:w-40 px-5 py-3 text-gray-700 border-->
 <!--                        border-gray-400 rounded-md appearance-none-->
@@ -52,7 +52,7 @@
                     <select class=" w-full sm:w-40 px-5 py-3 text-gray-700 border
                         border-gray-400 rounded-md appearance-none
                         focus:outline-none focus:ring-2 focus:ring-blue-400
-                        focus:border-transparent"
+                        focus:border-transparent mt-2"
                             v-model="props.type"
                     >
                         <option value="" selected>Select Type</option>
@@ -67,7 +67,7 @@
 
                     <input type="text" class="w-full sm:w-auto px-3 py-2 text-gray-700 border border-gray-400
                     rounded-md appearance-none focus:outline-none focus:ring-2
-                    focus:ring-blue-400 focus:border-transparent" placeholder="Search Title"
+                    focus:ring-blue-400 focus:border-transparent mt-2" placeholder="Search Title"
                            v-model="props.title"
                     >
 
@@ -75,19 +75,19 @@
 
                     <input type="number" class=" w-full sm:w-auto px-3 py-2 text-gray-700 border border-gray-400
                     rounded-md appearance-none focus:outline-none focus:ring-2
-                    focus:ring-blue-400 focus:border-transparent" placeholder="Value Greater than"
+                    focus:ring-blue-400 focus:border-transparent mt-2" placeholder="Value Greater than"
                            v-model="props.cycle_value"
                     >
 
                     <input type="number" class=" w-full sm:w-auto px-3 py-2 text-gray-700 border border-gray-400
                     rounded-md appearance-none focus:outline-none focus:ring-2
-                    focus:ring-blue-400 focus:border-transparent" placeholder="Premium Greater than"
+                    focus:ring-blue-400 focus:border-transparent mt-2" placeholder="Premium Greater than"
                            v-model="props.premium"
                     >
 
                     <input type="number" class=" w-full sm:w-auto px-3 py-2 text-gray-700 border border-gray-400
                     rounded-md appearance-none focus:outline-none focus:ring-2
-                    focus:ring-blue-400 focus:border-transparent" placeholder="Ends within (Days)"
+                    focus:ring-blue-400 focus:border-transparent mt-2" placeholder="Ends within (Days)"
                            v-model="props.ends_within"
                     >
 
@@ -114,6 +114,7 @@
                         :loading="customersLoading"
                         item-value="id"
                         v-model="props.client"
+                        class="w-full mt-2"
                     ></v-autocomplete>
 
 

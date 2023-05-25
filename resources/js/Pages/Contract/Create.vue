@@ -25,6 +25,10 @@ let props = defineProps({
 
 })
 
+const currentDate = new Date();
+const currentYear = currentDate.getFullYear();
+
+
 const customers=ref([])
 const searchQuery = ref('')
 const customersLoading = ref(false)
@@ -218,7 +222,7 @@ export default {
 
                                         <select class="select w-full" v-model="formData.prod_year">
                                             <option disabled selected class="text-black" value="">Select Year</option>
-                                            <option v-for="(year, index) in range(1999,2024)" :key="index" :value="year">{{year}}</option>
+                                            <option v-for="(year, index) in range(currentYear-15,currentYear+1)" :key="index" :value="year">{{year}}</option>
                                         </select>
 
                                         <p v-if="formData.errors.prod_year" class="text-sm text-red-500 font-semibold">{{formData.errors.prod_year}}</p>

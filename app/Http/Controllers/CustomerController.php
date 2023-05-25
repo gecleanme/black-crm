@@ -74,6 +74,9 @@ class CustomerController extends Controller
             }
         }
 
+        return redirect('/customers')->with('success', 'Success message');
+
+
 
     }
 
@@ -92,7 +95,8 @@ class CustomerController extends Controller
     {
         $customer->load('attachments');
         return Inertia::render('Customer/Edit',[
-            'customer' => $customer
+            'customer' => $customer,
+            'url' => env('APP_URL')
         ]);
 
     }
@@ -126,7 +130,7 @@ class CustomerController extends Controller
         }
 
 
-        return redirect('/customers');
+        return redirect('/customers')->with('success', 'Success message');
 
     }
 

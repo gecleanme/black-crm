@@ -17,6 +17,8 @@ import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import VueCollapsiblePanel from '@dafcoe/vue-collapsible-panel'
+import {Ziggy} from "@/ziggy";
 
 
 const vuetify = createVuetify({
@@ -39,6 +41,7 @@ createInertiaApp({
             .use(ZiggyVue, Ziggy)
             .use(vuetify)
             .use(VueSweetalert2)
+            .use(VueCollapsiblePanel)
             .component('VueDatePicker', VueDatePicker)
             .mount(el);
     },

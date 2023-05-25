@@ -37,31 +37,6 @@ const formData = useForm({
     notes: "",
     attachments : []
 });
-//
-// const attachmentPreview= ref( formData.attachments)
-//
-//
-// const packFiles = (event) => {
-//     for(const att of event.target.files){
-//         formData.attachments=att;
-//     }
-//
-//
-//     let file= event.target.files[0]
-//     if(!file){
-//         return
-//     }
-//
-//     const  reader = new FileReader()
-//     reader.onload=(e)=>{
-//         attachmentPreview.value=e.target.result
-//     }
-//
-//     reader.readAsDataURL(file)
-//
-//
-// }
-
 
 const packFiles = (event) => {
         //console.log(event.target.files)
@@ -143,7 +118,7 @@ export default {
                                         <label for="full_name" class="font-semibold">Vendor</label>
 
                                         <select class="select w-full" v-model="formData.vendor">
-                                            <option disabled selected class="text-black" value="">Select Client</option>
+                                            <option disabled selected class="text-black" value="">Select Vendor</option>
                                             <option value="Homer">Homer</option>
                                         </select>
 

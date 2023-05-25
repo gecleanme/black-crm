@@ -104,4 +104,14 @@ class Contract extends Model
 
 
 
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleting(function ($contract) {
+            $contract->attachments()->delete();
+        });
+    }
+
 }
+
+

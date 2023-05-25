@@ -2,22 +2,9 @@
 
 import {computed, inject, onMounted, ref} from "vue";
 
-import {useForm} from "@inertiajs/vue3";
-import CreateCycle from "@/Pages/Cycle/Create.vue";
-// const formData = useForm({
-// //create form and v-model the elements
-//     title: null,
-//     make:"",
-//     client:"",
-//     notes:null,
-//     prod_year:"",
-//     type:"Auto",
-//     model:"",
-//     regno:null,
-//     pnum:null,
-//     lic_exp:null
-// });
-
+import {useForm, Link} from "@inertiajs/vue3";
+import '@dafcoe/vue-collapsible-panel/dist/vue-collapsible-panel.css'
+import FlashSuccess from "@/Components/FlashSuccess.vue";
 
 const props = defineProps({
 
@@ -41,6 +28,9 @@ const formData = useForm({
     pnum:props.contract.pnum ?? null,
     lic_exp:props.contract.lic_exp ?? null
 });
+
+const currentDate = new Date();
+const currentYear = currentDate.getFullYear();
 
 
 const customers=ref([])
@@ -67,38 +57,9 @@ function range(start, end) {
     return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 }
 
-
-
-
-
-//
-// const attachmentPreview= ref( formData.attachments)
-//
-//
-// const packFiles = (event) => {
-//     for(const att of event.target.files){
-//         formData.attachments=att;
-//     }
-//
-//
-//     let file= event.target.files[0]
-//     if(!file){
-//         return
-//     }
-//
-//     const  reader = new FileReader()
-//     reader.onload=(e)=>{
-//         attachmentPreview.value=e.target.result
-//     }
-//
-//     reader.readAsDataURL(file)
-//
-//
-// }
-
 const reset = () => formData.reset();
 
-const sendData = () => formData.post(`/contract/update/${props.contract.id}`,{
+const sendData = () => formData.put(`/contract/update/${props.contract.id}`,{
     onSuccess: () => formData.reset()
 });
 
@@ -117,7 +78,9 @@ export default {
 
 <template>
 
-    <Head title="Contract Create" />
+    <FlashSuccess/>
+
+    <Head title="Contract Edit" />
     <form @submit.prevent="sendData">
 
         <!-- Template Start   -->
@@ -126,7 +89,7 @@ export default {
         <div class="min-h-screen p-6 bg-gray-100 flex items-center justify-center "  v-if="!formData.wasSuccessful">
             <div class="container max-w-screen-lg mx-auto">
                 <div>
-                    <h2 class="font-semibold text-xl text-gray-600">Add a Contract</h2>
+                    <h2 class="font-semibold text-xl text-gray-600">Edit a Contract</h2>
                     <p class="text-gray-500 mb-6">Required fields are marked with <span class="text-sm text-red-500">* </span></p>
 
                     <div class="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
@@ -240,7 +203,7 @@ export default {
 
                                         <select class="select w-full" v-model="formData.prod_year">
                                             <option disabled selected class="text-black" value="">Select Year</option>
-                                            <option v-for="(year, index) in range(1999,2024)" :key="index" :value="year">{{year}}</option>
+                                            <option v-for="(year, index) in range(currentYear-15,currentYear+1)" :key="index" :value="year">{{year}}</option>
                                         </select>
 
                                         <p v-if="formData.errors.prod_year" class="text-sm text-red-500 font-semibold">{{formData.errors.prod_year}}</p>
@@ -273,8 +236,84 @@ export default {
 
                                     </div>
 
+                                    <!--               Cycle loop start                     -->
+
+                                    <div class="md:col-span-6">
+                                        <label class="text-black font-semibold " for="cycle_loop">Cycles ({{contract.cycles.length}})</label>
+
+                                        <vue-collapsible-panel-group v-for="cycle in contract.cycles" :key="cycle.id" id="cycle_loop" class="mt-2">
+                                        <vue-collapsible-panel :expanded="false">
+                                            <template #title>
+                                                    <span>Starts: {{ cycle.start_date }}</span>
+                                            </template>
+
+                                            <template #content>
+                                                <div class="py-4 px-4">
+
+                                               <div class="spacing">
+                                                   <b> Ends</b>: {{cycle.end_date}}
+                                               </div>
+                                                    <hr/>
+
+                                                    <div class="spacing">
+
+                                                     <b> Value</b>: {{cycle.value}}
+                                                    </div>
+
+                                                <hr/>
+                                                    <div class="spacing">
+                                                        <b>Premium </b>: {{cycle.premium}}
+                                                    </div>
+                                                <hr/>
+                                                    <div class="spacing">
+                                                        <b>Vendor</b>: {{cycle.vendor}}
+                                                    </div>
+                                                <hr/>
+                                                    <div class="spacing">
+                                                        <b>Notes</b>: {{cycle.notes}}</div>
+
+                                                    <hr/>
+                                                <div class="spacing">
+                                                    <b>Attachments ({{cycle.attachment_urls.length}})</b>:
+
+                                                    <div v-for="(url,index) in cycle.attachment_urls" :key="index" class="mt-2">
+
+                                                        <a :href="url" target="_blank" class="underline py-4">Preview</a>
+
+                                                    </div>
+
+                                                </div>
+                                                </div>
 
 
+
+                                                <hr/>
+
+                                                <div class="spacing flex justify-evenly">
+                                                    <b>Actions</b><Link :href="`/cycle/edit/${cycle.id}`">Edit</Link>
+                                                </div>
+
+
+                                            </template>
+                                        </vue-collapsible-panel>
+
+                                    </vue-collapsible-panel-group>
+                                    </div>
+
+                                    <!--               Cycle loop end                     -->
+
+
+                                    <div class="md:col-span-5 text-right mb-10">
+                                        <div class="inline-flex items-end">
+                                            <Link class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded"
+                                            as="button"
+                                            href="/cycle/create"
+                                            >Add new Cycle</Link>
+                                        </div>
+
+                                    </div>
+
+                                    <hr style="border: 2px solid gray"/>
 
 
 
@@ -282,7 +321,7 @@ export default {
 
                                     <div class="md:col-span-5 text-right">
                                         <div class="inline-flex items-end">
-                                            <button class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded">Create Contract</button>
+                                            <button class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded">Update Contract</button>
                                         </div>
                                     </div>
 
@@ -309,8 +348,46 @@ export default {
         <!-- Template end   -->
 
     </form>
+<!--
+    <div class="p-6 bg-gray-100 flex items-center justify-center">
+        <div class="container max-w-screen-lg mx-auto">
+            <div>
+                <h2 class="font-semibold text-xl text-gray-600">Add a new Contract Cycle</h2>
+                <p class="text-gray-500 mb-6">Required fields are marked with <span class="text-sm text-red-500">* </span></p>
+
+                <div class="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
+                    <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
+                        <div class="text-gray-600">
+                            <p class="font-medium text-lg">Cycle Details</p>
+                        </div>
+
+                        <div class="md:col-span-6 mt-4">
+
+                            <div class="flex flex-col w-full lg:flex-row my-2">
+
+                            </div>
+
+                            <div class="flex text-sm text-gray-600">
+
+
+
+                            </div>
+                            <p class="text-xs text-black m-2">
+                            </p>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    -->
 </template>
 
 <style scoped>
-
+    .spacing {
+        @apply px-2 py-2
+    }
 </style>
