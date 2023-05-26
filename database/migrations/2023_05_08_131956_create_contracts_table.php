@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('pnum')->nullable();
             $table->string('type');
             $table->date('lic_exp')->nullable();
-            $table->foreignIdFor(Customer::class,'client_id')->default(1)->references('id')->on('customers')->cascadeOnDelete();
+            $table->foreignIdFor(Customer::class,'client_id')->default(1)->references('id')->on('customers')->cascadeOnDelete(); // delete all contracts wheen thiss is deleted
             $table->timestamps();
         });
     }

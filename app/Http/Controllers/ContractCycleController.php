@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Inertia\Inertia;
 use Termwind\Components\Dd;
-
 class ContractCycleController extends Controller
 {
     /**
@@ -25,7 +24,9 @@ class ContractCycleController extends Controller
      */
     public function create()
     {
-       // dd(ContractCycle::all());
+        if(!session('contract_id'))
+            abort(406,'You must Create a contract first before attaching a cycle');
+
         return Inertia::render('Cycle/Create');
     }
 
@@ -71,7 +72,6 @@ class ContractCycleController extends Controller
 
         return redirect('/contract/edit/'.$latest_contract)->with('success','Success Message');
 
-       // session()->forget('contract_id');
 
 
 

@@ -63,7 +63,6 @@ class Customer extends Model
     {
         parent::boot();
         static::deleting(function ($customer) {
-            $customer->contracts()->delete();
             $customer->attachments()->delete();
         });
     }

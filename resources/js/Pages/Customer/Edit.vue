@@ -24,7 +24,7 @@ const formData = useForm({
     ref:props.customer.ref ?? null,
     dob:props.customer.dob ?? null,
     secondary_phone:props.customer.secondary_phone ?? null,
-    risk_level:props.customer.risk_level ?? parseInt("25"),
+    risk_level:props.customer.risk_level ?? 25,
     attachments: []
 
 });

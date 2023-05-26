@@ -58,7 +58,7 @@ Route::middleware('auth')->group(function (){
     Route::put('/contract/update/{contract}', [ContractController::class, 'update']);
     Route::post('/contract/store', [ContractController::class, 'store']);
 
-    Route::get('/cycle/create', [ContractCycleController::class, 'create'])->name('cycles.create');
+    Route::get('/cycle/create/', [ContractCycleController::class, 'create'])->name('cycles.create');
     Route::get('/cycle/edit/{contractCycle}', [ContractCycleController::class, 'edit'])->name('cycles.edit');
 
     Route::post('/cycle/store', [ContractCycleController::class, 'store']);

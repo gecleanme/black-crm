@@ -16,7 +16,7 @@ const formData = useForm({
     ref:null,
     dob:null,
     secondary_phone:null,
-    risk_level:parseInt("25"),
+    risk_level:25,
     attachments : []
 
 
