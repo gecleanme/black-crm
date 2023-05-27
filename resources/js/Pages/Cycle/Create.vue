@@ -3,18 +3,19 @@
 import {computed, ref} from "vue";
 
 import {useForm} from "@inertiajs/vue3";
-let formattedStart;
-const startDate = ref(new Date());
 
-formattedStart = computed(() => {
-    return useFormatDateToISO(startDate.value);
+const props = defineProps({
+    contract_id: Object
+})
+
+
+const formattedStart = computed(() => {
+    return useFormatDateToISO(formData.start_date);
 });
 
-let formattedEnd;
-const endDate = ref(new Date());
 
-formattedEnd = computed(() => {
-    return useFormatDateToISO(endDate.value);
+const formattedEnd = computed(() => {
+    return useFormatDateToISO(formData.end_date);
 });
 
 function useFormatDateToISO(dateToFormat) {
@@ -29,10 +30,11 @@ function useFormatDateToISO(dateToFormat) {
 
 const formData = useForm({
     // create form and v-model the elements
+    contract_id: props.contract_id.id,
     value: null,
     premium: null,
-    start_date: useFormatDateToISO(startDate.value),
-    end_date: useFormatDateToISO(endDate.value), // oh ok
+    start_date: useFormatDateToISO(new Date()),
+    end_date: useFormatDateToISO(new Date()), // oh ok
     vendor: "",
     notes: "",
     attachments : []
@@ -129,7 +131,7 @@ export default {
                                     <div class="md:col-span-5">
                                         <p class="font-semibold">Start Date</p>
 
-                                        <VueDatePicker v-model="startDate" :enable-time-picker="false"
+                                        <VueDatePicker v-model="formData.start_date" :enable-time-picker="false"
                                         ></VueDatePicker>
 
                                         <p v-if="formData.errors.start_date" class="text-sm text-red-500 font-semibold">{{formData.errors.start_date}}</p>

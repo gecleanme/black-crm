@@ -22,12 +22,15 @@ class ContractCycleController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Contract $contract_id)
     {
-        if(!session('contract_id'))
-            abort(406,'You must Create a contract first before attaching a cycle');
 
-        return Inertia::render('Cycle/Create');
+//        if(!session('contract_id'))
+//            abort(406,'You must Create a contract first before attaching a cycle');
+
+        return Inertia::render('Cycle/Create', [
+            'contract_id' => $contract_id
+        ]);
     }
 
     /**
@@ -36,8 +39,8 @@ class ContractCycleController extends Controller
 
     public function store(Request $request)
     {
-
-        $latest_contract= session('contract_id');
+      //  dd($request->all());
+        //$latest_contract= session('contract_id');
 
         $validatedData = $request->validate([
             'value' => 'required',
@@ -45,21 +48,15 @@ class ContractCycleController extends Controller
             'notes' => 'nullable',
             'vendor' => 'string',
             'start_date' => ['required', 'date_format:Y-m-d'],
-            'end_date' => ['required', 'date_format:Y-m-d']
+            'end_date' => ['required', 'date_format:Y-m-d'],
+            'contract_id' => 'required'
         ]);
 
-        $startDate = Carbon::parse( $validatedData['start_date']);
-        $endDate = Carbon::parse( $validatedData['end_date']);
+        $validatedData['start_date'] = Carbon::parse( $validatedData['start_date']);
+        $validatedData['end_date'] = Carbon::parse( $validatedData['end_date']);
 
-      $cycle= ContractCycle::create([
-            'contract_id' => $latest_contract,
-            'value' => $validatedData['value'],
-            'premium' => $validatedData['premium'],
-            'notes' => $validatedData['notes'],
-            'vendor' => $validatedData['vendor'],
-            'start_date' => $startDate,
-            'end_date' => $endDate
-        ]);
+        $cycle = ContractCycle::create($validatedData);
+
 
       if ($request->hasFile('attachments')){
           foreach ($request->file('attachments') as $file){
@@ -70,7 +67,7 @@ class ContractCycleController extends Controller
           }
       }
 
-        return redirect('/contract/edit/'.$latest_contract)->with('success','Success Message');
+        return redirect('/contract/edit/'.$validatedData['contract_id'])->with('success','Success Message');
 
 
 
@@ -137,9 +134,7 @@ class ContractCycleController extends Controller
             }
         }
 
-
-        return back()->with('success','Success Message');
-
+            return redirect('/contract/edit/'. $contractCycle->contract_id)->with('success', 'Success');
     }
 
     /**

@@ -2,8 +2,9 @@
 
 import {computed, ref} from "vue";
 
-import {Link, useForm} from "@inertiajs/vue3";
+import {Link, router, useForm} from "@inertiajs/vue3";
 import ConfrimDelete from "@/Components/ConfrimDelete.vue";
+import FlashSuccess from "@/Components/FlashSuccess.vue";
 
 const props = defineProps({
     cycle: Object,
@@ -34,24 +35,14 @@ function useFormatDateToISO(dateToFormat) {
     return `${year}-${month}-${day}`;
 }
 
-function useFormatDateToISOFE(dateToFormat) {
-    dateToFormat = new Date(new Date(dateToFormat).toDateString());
-
-    let day = String(dateToFormat.getDate()).padStart(2, '0');
-    let month = String(dateToFormat.getMonth() + 1).padStart(2, '0');
-    let year = dateToFormat.getFullYear();
-
-    return `${month}/${day}/${year}`;
-}
-
 
 const formData = useForm({
     // create form and v-model the elements
     _method: 'put',
     value: props.cycle.value ?? null,
     premium: props.cycle.premium ?? null,
-    start_date: useFormatDateToISOFE(props.cycle.start_date),
-    end_date: useFormatDateToISOFE(props.cycle.end_date),
+    start_date: useFormatDateToISO(props.cycle.start_date),
+    end_date: useFormatDateToISO(props.cycle.end_date),
     vendor:props.cycle.vendor ?? "",
     notes: props.cycle.notes ?? "",
     attachments : []
@@ -100,7 +91,7 @@ const sendData = () => formData.transform((data) => ({
     start_date:useFormatDateToISO(data.start_date),
     end_date:useFormatDateToISO(data.end_date),
 })).post(`/cycle/update/${props.cycle.id}`,{
-    onSuccess: () => formData.reset()
+    //onSuccess: () => router.visit(`/cycle/edit/${props.cycle.id}`)
 });
 
 
@@ -116,12 +107,13 @@ import '@vuepic/vue-datepicker/dist/main.css'
 //const date = ref();
 export default {
     layout: Layout,
-    name:"CreateEdit"
+    name:"CycleEdit"
 }
 </script>
 
 <template>
-    <Head title="Contract Cycle Edit" />
+    <FlashSuccess/>
+    <Head title="Contract Cycle Edit Hi" />
     <form @submit.prevent="sendData">
 
         <!-- Template Start   -->
@@ -173,7 +165,7 @@ export default {
                                     <div class="md:col-span-5">
                                         <p class="font-semibold">Start Date</p>
 
-                                        <VueDatePicker v-model="startDate" :enable-time-picker="false"
+                                        <VueDatePicker v-model="formData.start_date" :enable-time-picker="false"
                                         ></VueDatePicker>
 
                                         <p v-if="formData.errors.start_date" class="text-sm text-red-500 font-semibold">{{formData.errors.start_date}}</p>

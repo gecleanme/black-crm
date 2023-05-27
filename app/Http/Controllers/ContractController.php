@@ -59,9 +59,8 @@ class ContractController extends Controller
 
         ]));
 
-       session(['contract_id'=> $contract->id]);
 
-        return redirect('/cycle/create')->with('success', 'Success message');
+        return redirect('/cycle/create/'.$contract->id)->with('success', 'Success message');
     }
 
     /**
