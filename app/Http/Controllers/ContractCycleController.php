@@ -113,17 +113,11 @@ class ContractCycleController extends Controller
             'end_date' => ['required', 'date_format:Y-m-d']
         ]);
 
-        $startDate = Carbon::parse( $validatedData['start_date']);
-        $endDate = Carbon::parse( $validatedData['end_date']);
+        $validatedData['start_date'] = Carbon::parse( $validatedData['start_date']);
+        $validatedData['end_date'] = Carbon::parse( $validatedData['end_date']);
 
-        $contractCycle->update([
-            'value' => $validatedData['value'],
-            'premium' => $validatedData['premium'],
-            'notes' => $validatedData['notes'],
-            'vendor' => $validatedData['vendor'],
-            'start_date' => $startDate,
-            'end_date' => $endDate
-        ]);
+        $contractCycle->update($validatedData);
+
 
         if ($request->hasFile('attachments')){
             foreach ($request->file('attachments') as $file){
