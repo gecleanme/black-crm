@@ -113,7 +113,7 @@ export default {
 
 <template>
     <FlashSuccess/>
-    <Head title="Contract Cycle Edit Hi" />
+    <Head title="Contract Cycle Edit" />
     <form @submit.prevent="sendData">
 
         <!-- Template Start   -->

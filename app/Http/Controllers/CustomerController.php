@@ -6,6 +6,7 @@ use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Vtiful\Kernel\Excel;
 
 class CustomerController extends Controller
 {
@@ -141,4 +142,39 @@ class CustomerController extends Controller
     {
         //
     }
+
+    public function exporter()
+    {
+        $fileName = 'customers_export'.today().'csv';
+        $headers = [
+            'Content-Type'        => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
+        ];
+
+        $columns = ['Name', 'Primary_Phone','Notes', 'VIP'];
+
+        $callback = function () use ($columns) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+
+            Customer::chunk(1000, function ($customers) use ($file) {
+                foreach ($customers as $customer) {
+                    $row = [
+                        'name' => $customer->name,
+                        'cell' => $customer->cell,
+                        'Notes' => $customer->notes,
+                        'VIP?' => $customer->vip ? 'Yes': 'No'
+                    ];
+
+                    fputcsv($file, $row);
+                }
+            });
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+
 }

@@ -11,6 +11,21 @@ const props = defineProps({
     types:Array
 })
 
+const exp = () => {
+    axios.post('/customer/export', {}, { responseType: 'blob' })
+        .then(response => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'customer.csv');
+            document.body.appendChild(link);
+            link.click();
+        })
+        .catch(error => {
+            console.log(error);
+        });
+};
+
 
 </script>
 
@@ -22,10 +37,13 @@ const props = defineProps({
           class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded disabled:bg-opacity-40 m-6"
           as="button"
     > Add Customer</Link>
+
     </div>
+
     <div class="overflow-x-auto">
 
         <FilterForm :types="props.types" :filters="props.filters"></FilterForm>
+
 
         <div class="w-full sm:max-w-2xl md:max-w-4xl lg:max-w-6xl mx-auto">
             <table class="table-auto text-left text-xs sm:text-sm font-light mx-auto md:min-w-full">
@@ -35,6 +53,13 @@ const props = defineProps({
                     <th scope="col" class="px-6 py-4">Primary Phone</th>
                     <th scope="col" class="px-6 py-4">Notes</th>
                     <th scope="col" class="px-6 py-4">VIP?</th>
+                    <th>
+                        <form @submit.prevent="exp" >
+                            <button
+                                class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded disabled:bg-opacity-40 m-6"
+                            >Export Data</button>
+                        </form>
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
