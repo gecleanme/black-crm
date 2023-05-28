@@ -45,7 +45,9 @@ require __DIR__.'/auth.php';
 //app routes start
 
 Route::middleware('auth')->group(function (){
-
+    Route::get('/', function (){
+       return redirect('/customers');
+    });
     Route::get('/customers', [CustomerController::class, 'index']);
     Route::get('/customer/create', [CustomerController::class, 'create']);
     Route::post('/customer/store', [CustomerController::class, 'store']);
