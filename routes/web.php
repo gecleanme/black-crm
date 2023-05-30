@@ -68,7 +68,9 @@ Route::middleware('auth')->group(function (){
 
     Route::get('/contracts', [ContractController::class, 'index'])->name('contract_idx');
 
-    Route::post('/customer/export', [CustomerController::class, 'exporter']);
+    Route::post('/customer/export', [CustomerController::class, 'exporter'])->name('customers.export');
+    Route::post('/contract/export', [ContractController::class, 'exporter'])->name('contracts.export');
+
 
 
 });

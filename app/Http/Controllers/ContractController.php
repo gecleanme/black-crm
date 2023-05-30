@@ -116,4 +116,49 @@ class ContractController extends Controller
     {
         //
     }
+
+    public function exporter(Request $request)
+    {
+        $filters= $request->only(['title','value', 'cycle_value','premium','ends_within','type','is_active', 'client']);
+
+        $fileName = 'contracts_export'.today().'csv';
+        $headers = [
+            'Content-Type'        => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
+        ];
+
+        $columns = ['Title', 'Starts','Ends', 'Value','Premium','Customer','Type'];
+
+        $callback = function () use ($filters, $request, $columns) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+
+            $query = Contract::query();
+
+            $query->filter($filters);
+
+
+
+            $query->chunk(1000, function ($contracts) use ($file) {
+                foreach ($contracts as $contract) {
+                    $row = [
+                        'title' => $contract->title,
+                        'Starts' =>$contract->last_cycle->start_date,
+                        'Ends' =>$contract->last_cycle->end_date,
+                        'Value' =>$contract->last_cycle->value,
+                        'Premium' =>$contract->last_cycle->premium,
+                        'Customer' =>$contract->customer->name,
+                        'Type' =>$contract->type
+                    ];
+
+                    fputcsv($file, $row);
+                }
+            });
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
 }

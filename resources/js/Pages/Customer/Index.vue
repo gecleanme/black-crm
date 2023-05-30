@@ -4,6 +4,7 @@ import TablePagination from "@/Components/TablePagination.vue";
 import FilterForm from "@/Components/FilterForm.vue";
 import {Link} from "@inertiajs/vue3";
 import FlashSuccess from "@/Components/FlashSuccess.vue";
+import route from "ziggy-js/src/js";
 
 const props = defineProps({
     customers: Object,
@@ -12,12 +13,15 @@ const props = defineProps({
 })
 
 const exp = () => {
-    axios.post('/customer/export', {}, { responseType: 'blob' })
+    console.log(route().params)
+    axios.post(route('customers.export', props.filters), {}, { responseType: 'blob' })
         .then(response => {
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', 'customer.csv');
+            link.setAttribute('download', 'customer '+new Date().toLocaleDateString('en-US', {
+                year: 'numeric', month: 'numeric', day: 'numeric'
+            })+'.csv');
             document.body.appendChild(link);
             link.click();
         })

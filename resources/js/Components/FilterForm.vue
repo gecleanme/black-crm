@@ -87,8 +87,9 @@
 
 <script setup>
 
-import {useForm, usePage} from "@inertiajs/vue3";
+import {router, useForm, usePage} from "@inertiajs/vue3";
 import {ref ,inject} from "vue";
+import route from "ziggy-js/src/js";
 
 
 const data =defineProps({
@@ -103,14 +104,13 @@ let props=null;
 
 
     props = useForm({
-
         type: data.filters.type ?? "",
         name: data.filters.name ?? null,
         risk_level: data.filters.risk_level ?? ""
     });
 
 
-const clear = () => props.reset();
+const clear = () => router.visit(route(route().current()))
 
 const filter = () => props.get('/customers',{
    preserveScroll:true,

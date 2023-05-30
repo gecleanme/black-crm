@@ -4,10 +4,31 @@ import TablePagination from "@/Components/TablePagination.vue";
 import FilterFormContracts from "@/Components/FilterFormContracts.vue";
 import FlashSuccess from "@/Components/FlashSuccess.vue";
 import {Link} from "@inertiajs/vue3";
+import route from "ziggy-js/src/js";
 const props = defineProps({
     contracts: Object,
     filters: Array
 })
+
+
+
+const exp = () => {
+    console.log(route().params)
+    axios.post(route('contracts.export', props.filters), {}, { responseType: 'blob' })
+        .then(response => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'contract '+new Date().toLocaleDateString('en-US', {
+                year: 'numeric', month: 'numeric', day: 'numeric'
+            })+'.csv');
+            document.body.appendChild(link);
+            link.click();
+        })
+        .catch(error => {
+            console.log(error);
+        });
+};
 
 
 </script>
@@ -34,6 +55,13 @@ const props = defineProps({
                     <th scope="col" class="px-6 py-4">Premium</th>
                     <th scope="col" class="px-6 py-4">Customer</th>
                     <th scope="col" class="px-6 py-4">Type</th>
+                    <th>
+                        <form @submit.prevent="exp" >
+                            <button
+                                class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded disabled:bg-opacity-40 m-6"
+                            >Export Data</button>
+                        </form>
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
