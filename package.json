@@ -19,6 +19,7 @@
     },
     "dependencies": {
         "@dafcoe/vue-collapsible-panel": "^0.2.0",
+        "@headlessui/vue": "^1.7.13",
         "@vuepic/vue-datepicker": "^5.0.1",
         "daisyui": "^2.51.6",
         "jquery": "^3.7.0",
