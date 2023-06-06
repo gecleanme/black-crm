@@ -4,8 +4,13 @@ import {ref, watch} from "vue";
 
 const showItems= ref(false)
 
+const props= defineProps({
+    containerClasses: String,
+    triggerClasses: String
+})
+
 const closeFromOutside = (event) =>{
-    if(!event.target.closest('.droppy')){
+    if(!event.target.closest('.mindrop')){
         showItems.value = false;
     }
 }
@@ -18,9 +23,9 @@ watch(showItems, () =>{
 
 </script>
 <template>
-    <div class="droppy relative">
+    <div class="mindrop relative" :class="props.containerClasses">
 
-    <div @click="showItems=!showItems">
+    <div @click="showItems=!showItems" :class="props.triggerClasses">
         <slot name="trigger"></slot>
     </div>
 
