@@ -6,7 +6,8 @@ const showItems= ref(false)
 
 const props= defineProps({
     containerClasses: String,
-    triggerClasses: String
+    triggerClasses: String,
+    listWrapperClasses: String
 })
 
 const closeFromOutside = (event) =>{
@@ -25,21 +26,17 @@ watch(showItems, () =>{
 <template>
     <div class="mindrop relative" :class="props.containerClasses">
 
-    <div @click="showItems=!showItems" :class="props.triggerClasses">
+    <div class="bg-black rounded px-2 py-3 text-white" @click="showItems=!showItems" :class="props.triggerClasses" >
         <slot name="trigger"></slot>
     </div>
 
-    <div  class="bg-black absolute mt-2 px-3 py-2 rounded-md shadow-lg text-white z-50" v-show="showItems">
+    <div  class="bg-black absolute mt-2 px-3 py-2 rounded-md shadow-lg text-white z-50" v-show="showItems" :class="props.listWrapperClasses">
         <slot/>
       </div>
     </div>
 </template>
 
 <style scoped>
-
-.droppy {
-    @apply w-[30%]
-}
 
 
 </style>
