@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('sex');
             $table->boolean('vip')->default(false);
             $table->string('cell');
-          //  $table->foreignIdFor(User::class, 'manager')->nullable()->default(1)->references('id')->on('users');
+            //  $table->foreignIdFor(User::class, 'manager')->nullable()->default(1)->references('id')->on('users');
             $table->string('ref')->nullable();
             $table->longText('notes')->nullable();
             $table->integer('risk_level');

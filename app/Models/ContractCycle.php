@@ -11,15 +11,14 @@ class ContractCycle extends Model
 {
     use HasFactory;
 
-    protected $appends=['attachment_urls','attachment_filename'];
+    protected $appends = ['attachment_urls', 'attachment_filename'];
 
     public function attachments()
     {
         return $this->morphMany(Attachment::class, 'attachable'); //has many attachables
     }
 
-
-    public function contract() :BelongsTo
+    public function contract(): BelongsTo
     {
         return $this->belongsTo(Contract::class, 'contract_id'); //has many attachables
     }
@@ -29,8 +28,9 @@ class ContractCycle extends Model
         $urls = [];
 
         foreach ($this->attachments as $attachment) {
-            if (Storage::disk('public')->exists($attachment->attachments))
+            if (Storage::disk('public')->exists($attachment->attachments)) {
                 $urls[] = Storage::disk('public')->url($attachment->attachments);
+            }
         }
 
         return $urls;
@@ -41,14 +41,11 @@ class ContractCycle extends Model
         $urls = [];
 
         foreach ($this->attachments as $attachment) {
-            if (Storage::disk('public')->exists($attachment->attachments))
+            if (Storage::disk('public')->exists($attachment->attachments)) {
                 $urls[] = $attachment->attachments;
+            }
         }
 
         return $urls;
     }
-
-
-
-
 }

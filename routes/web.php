@@ -41,12 +41,11 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-
 //app routes start
 
-Route::middleware('auth')->group(function (){
-    Route::get('/', function (){
-       return redirect('/customers');
+Route::middleware('auth')->group(function () {
+    Route::get('/', function () {
+        return redirect('/customers');
     });
     Route::get('/customers', [CustomerController::class, 'index']);
     Route::get('/customer/create', [CustomerController::class, 'create']);
@@ -71,7 +70,4 @@ Route::middleware('auth')->group(function (){
     Route::post('/customer/export', [CustomerController::class, 'exporter'])->name('customers.export');
     Route::post('/contract/export', [ContractController::class, 'exporter'])->name('contracts.export');
 
-
-
 });
-

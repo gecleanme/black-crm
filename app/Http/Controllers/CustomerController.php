@@ -6,8 +6,6 @@ use App\Http\Resources\CustomerResource;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use PhpParser\Node\Expr\Isset_;
-use Vtiful\Kernel\Excel;
 
 class CustomerController extends Controller
 {
@@ -18,24 +16,23 @@ class CustomerController extends Controller
     {
         //dd(Customer::query()->latest()->first());
 
-
-        $filters= $request->only(['name','type', 'risk_level']);
+        $filters = $request->only(['name', 'type', 'risk_level']);
         $types = ['Business', 'Individual'];
 
-         $query=Customer::query()
-            ->when($request->query('search'),function ($q) use ($request) {
-                $term=$request->query('search');
-                $q->where('name','LIKE','%'.$term.'%');
+        $query = Customer::query()
+            ->when($request->query('search'), function ($q) use ($request) {
+                $term = $request->query('search');
+                $q->where('name', 'LIKE', '%'.$term.'%');
             });
 
-        if ($request->wantsJson()){
+        if ($request->wantsJson()) {
             return CustomerResource::collection($query->get());
         }
 
-        return Inertia::render('Customer/Index',[
+        return Inertia::render('Customer/Index', [
             'customers' => Customer::query()->latest()->filter($filters)->paginate(10)->withQueryString(),
             'filters' => $filters,
-            'types' => $types
+            'types' => $types,
         ]);
     }
 
@@ -45,7 +42,6 @@ class CustomerController extends Controller
     public function create()
     {
 
-
         return Inertia::render('Customer/Create');
     }
 
@@ -54,9 +50,9 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        $customer= Customer::create($request->validate([
-           'name' => 'required|string|min:2|max:20',
-           'cell'  => 'required|string|min:10|max:14',
+        $customer = Customer::create($request->validate([
+            'name' => 'required|string|min:2|max:20',
+            'cell' => 'required|string|min:10|max:14',
             'sex' => 'required|string',
             'vip' => 'required|boolean',
             'type' => 'required|string',
@@ -64,22 +60,20 @@ class CustomerController extends Controller
             'ref' => 'string|nullable',
             'dob' => 'date|nullable',
             'secondary_phone' => 'nullable|string|min:10|max:14',
-            'notes' => 'string|nullable|min:3|max:400'
+            'notes' => 'string|nullable|min:3|max:400',
 
         ]));
 
-        if ($request->hasFile('attachments')){
-            foreach ($request->file('attachments') as $file){
+        if ($request->hasFile('attachments')) {
+            foreach ($request->file('attachments') as $file) {
                 $attachments = $file->store('attachments', 'public');
                 $customer->attachments()->create([
-                    'attachments' => $attachments
+                    'attachments' => $attachments,
                 ]);
             }
         }
 
         return redirect('/customers')->with('success', 'Success message');
-
-
 
     }
 
@@ -97,9 +91,10 @@ class CustomerController extends Controller
     public function edit(Customer $customer)
     {
         $customer->load('attachments');
-        return Inertia::render('Customer/Edit',[
+
+        return Inertia::render('Customer/Edit', [
             'customer' => $customer,
-            'url' => env('APP_URL')
+            'url' => env('APP_URL'),
         ]);
 
     }
@@ -111,7 +106,7 @@ class CustomerController extends Controller
     {
         $customer->update($request->validate([
             'name' => 'required|string|min:2|max:20',
-            'cell'  => 'required|string|min:10|max:14',
+            'cell' => 'required|string|min:10|max:14',
             'sex' => 'required|string',
             'vip' => 'required|boolean',
             'type' => 'required|string',
@@ -119,19 +114,18 @@ class CustomerController extends Controller
             'ref' => 'string|nullable',
             'dob' => 'date|nullable',
             'secondary_phone' => 'nullable|string|min:10|max:14',
-            'notes' => 'string|nullable|min:3|max:400'
+            'notes' => 'string|nullable|min:3|max:400',
 
         ]));
 
-        if ($request->hasFile('attachments')){
-            foreach ($request->file('attachments') as $file){
+        if ($request->hasFile('attachments')) {
+            foreach ($request->file('attachments') as $file) {
                 $attachments = $file->store('attachments', 'public');
                 $customer->attachments()->create([
-                    'attachments' => $attachments
+                    'attachments' => $attachments,
                 ]);
             }
         }
-
 
         return redirect('/customers')->with('success', 'Success message');
 
@@ -148,25 +142,23 @@ class CustomerController extends Controller
     public function exporter(Request $request)
     {
 
-        $filters= $request->only(['name','type', 'risk_level']);
+        $filters = $request->only(['name', 'type', 'risk_level']);
 
         $fileName = 'customers_export'.today().'csv';
         $headers = [
-            'Content-Type'        => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="'.$fileName.'"',
         ];
 
-        $columns = ['Name', 'Primary_Phone','Notes', 'VIP'];
+        $columns = ['Name', 'Primary_Phone', 'Notes', 'VIP'];
 
-        $callback = function () use ($filters, $request, $columns) {
+        $callback = function () use ($filters, $columns) {
             $file = fopen('php://output', 'w');
             fputcsv($file, $columns);
 
             $query = Customer::query();
 
-                $query->filter($filters);
-
-
+            $query->filter($filters);
 
             $query->chunk(1000, function ($customers) use ($file) {
                 foreach ($customers as $customer) {
@@ -174,7 +166,7 @@ class CustomerController extends Controller
                         'name' => $customer->name,
                         'cell' => $customer->cell,
                         'Notes' => $customer->notes,
-                        'VIP?' => $customer->vip ? 'Yes': 'No'
+                        'VIP?' => $customer->vip ? 'Yes' : 'No',
                     ];
 
                     fputcsv($file, $row);
@@ -186,6 +178,4 @@ class CustomerController extends Controller
 
         return response()->stream($callback, 200, $headers);
     }
-
-
 }

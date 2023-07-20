@@ -19,11 +19,11 @@ class CustomerFactory extends Factory
         return [
 
             'name' => fake()->name,
-            'cell'  => fake()->phoneNumber,
+            'cell' => fake()->phoneNumber,
             'sex' => fake()->word,
             'vip' => fake()->boolean,
             'type' => fake()->word,
-            'risk_level' => fake()->numberBetween(25,100),
+            'risk_level' => fake()->numberBetween(25, 100),
             'ref' => fake()->name,
             'dob' => fake()->date,
             'secondary_phone' => fake()->phoneNumber,

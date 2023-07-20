@@ -15,7 +15,6 @@ return new class extends Migration
         end_date:null,
         vendor:"",
         notes: ""
-
      */
     public function up(): void
     {
@@ -28,8 +27,7 @@ return new class extends Migration
             $table->string('vendor');
             $table->longText('notes')->nullable();
             //$table->foreignId('contract_id')->nullable()->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Contract::class,'contract_id')->references('id')->on('contracts')->cascadeOnDelete();
-
+            $table->foreignIdFor(Contract::class, 'contract_id')->references('id')->on('contracts')->cascadeOnDelete();
 
             $table->timestamps();
         });

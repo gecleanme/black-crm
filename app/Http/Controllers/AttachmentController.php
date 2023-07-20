@@ -68,8 +68,7 @@ class AttachmentController extends Controller
         // Delete the attachment record from the database
         $attachment->delete();
 
-        return redirect()->back()->with('success','deleted');
-
+        return redirect()->back()->with('success', 'deleted');
 
     }
 }

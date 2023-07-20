@@ -11,67 +11,65 @@ class Contract extends Model
     use HasFactory;
 
     public const MAKES = [
-    "Toyota",
-    "Ford",
-    "Honda",
-    "Chevrolet",
-    "Volkswagen",
-    "Nissan",
-    "Hyundai",
-    "BMW",
-    "Mercedes-Benz",
-    "Audi",
-    "Subaru",
-    "Mazda",
-    "Kia",
-    "Lexus",
-    "Jeep",
-    "GMC",
-    "Ram",
-    "Tesla",
-    "Volvo",
-    "Chrysler",
-    "Cadillac",
-    "Buick",
-    "Acura",
-    "Infiniti",
-    "Land Rover",
-    "Mitsubishi",
-    "Jaguar",
-    "Porsche",
-    "Mini",
-    "Fiat"
-];
-    public const MODELS = [
-        'BMW' => ['1 Series', '2 Series', '3 Series'],
-        'Toyota' => ['Corolla', 'Yaris']
+        'Toyota',
+        'Ford',
+        'Honda',
+        'Chevrolet',
+        'Volkswagen',
+        'Nissan',
+        'Hyundai',
+        'BMW',
+        'Mercedes-Benz',
+        'Audi',
+        'Subaru',
+        'Mazda',
+        'Kia',
+        'Lexus',
+        'Jeep',
+        'GMC',
+        'Ram',
+        'Tesla',
+        'Volvo',
+        'Chrysler',
+        'Cadillac',
+        'Buick',
+        'Acura',
+        'Infiniti',
+        'Land Rover',
+        'Mitsubishi',
+        'Jaguar',
+        'Porsche',
+        'Mini',
+        'Fiat',
     ];
 
+    public const MODELS = [
+        'BMW' => ['1 Series', '2 Series', '3 Series'],
+        'Toyota' => ['Corolla', 'Yaris'],
+    ];
 
-    protected $appends=['last_cycle'];
+    protected $appends = ['last_cycle'];
 
     public function cycles()
     {
-        return $this->hasMany(ContractCycle::class,'contract_id')->orderBy('created_at','desc');
+        return $this->hasMany(ContractCycle::class, 'contract_id')->orderBy('created_at', 'desc');
     }
 
-    public function customer(){
+    public function customer()
+    {
         return $this->belongsTo(Customer::class, 'client_id');
     }
 
-    public function getLastCycleAttribute(){
+    public function getLastCycleAttribute()
+    {
         return $this->cycles()->latest()->first();
     }
-
-
-
-
 
     public function scopeFilter(Builder $query, array $filters): Builder
     {
         return $query
             ->when(isset($filters['title']), function (Builder $query) use ($filters) {
-                $query->where('title', 'LIKE', '%' . $filters['title'] . '%');
+                $query->where('title', 'LIKE', '%'.$filters['title'].'%');
             })
             ->when(isset($filters['cycle_value']), function (Builder $query) use ($filters) {
                 $query->whereHas('cycles', function (Builder $subQuery) use ($filters) {
@@ -102,8 +100,6 @@ class Contract extends Model
             });
     }
 
-
-
     protected static function boot()
     {
         parent::boot();
@@ -111,7 +107,4 @@ class Contract extends Model
             $contract->attachments()->delete();
         });
     }
-
 }
-
-

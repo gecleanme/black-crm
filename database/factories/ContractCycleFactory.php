@@ -18,13 +18,13 @@ class ContractCycleFactory extends Factory
     public function definition(): array
     {
         return [
-            'value' => fake()->numberBetween(5000,200000),
+            'value' => fake()->numberBetween(5000, 200000),
             'premium' => fake()->numberBetween(1000, 20000),
             'notes' => fake()->paragraph(),
             'vendor' => fake()->word,
             'start_date' => fake()->date(),
             'end_date' => fake()->date(),
-            'contract_id' => Contract::factory()
+            'contract_id' => Contract::factory(),
         ];
     }
 }

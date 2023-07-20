@@ -13,13 +13,15 @@ class Customer extends Model
 {
     use HasFactory;
 
-    protected $appends=['attachment_urls','attachment_filename'];
+    protected $appends = ['attachment_urls', 'attachment_filename'];
+
     public function attachments(): MorphMany
     {
         return $this->morphMany(Attachment::class, 'attachable'); //has many attachables
     }
 
-    public function contracts(): HasMany {
+    public function contracts(): HasMany
+    {
 
         return $this->hasMany(Contract::class);
     }
@@ -29,8 +31,9 @@ class Customer extends Model
         $urls = [];
 
         foreach ($this->attachments as $attachment) {
-            if (Storage::disk('public')->exists($attachment->attachments))
-            $urls[] = Storage::disk('public')->url($attachment->attachments);
+            if (Storage::disk('public')->exists($attachment->attachments)) {
+                $urls[] = Storage::disk('public')->url($attachment->attachments);
+            }
         }
 
         return $urls;
@@ -41,23 +44,21 @@ class Customer extends Model
         $urls = [];
 
         foreach ($this->attachments as $attachment) {
-            if (Storage::disk('public')->exists($attachment->attachments))
+            if (Storage::disk('public')->exists($attachment->attachments)) {
                 $urls[] = $attachment->attachments;
+            }
         }
 
         return $urls;
     }
 
-
     public function scopeFilter(Builder $query, array $filters): Builder
     {
         return $query->when($filters['name'] ?? false, fn ($query, $value) => $query->where('name', 'LIKE', '%'.$value.'%'))
             ->when($filters['type'] ?? false, fn ($query, $value) => $query->where('type', $value))
-            ->when($filters['risk_level'] ?? false, fn ($query, $value) => $query->where('risk_level', (int)$value));
-
+            ->when($filters['risk_level'] ?? false, fn ($query, $value) => $query->where('risk_level', (int) $value));
 
     }
-
 
     protected static function boot()
     {
@@ -66,6 +67,4 @@ class Customer extends Model
             $customer->attachments()->delete();
         });
     }
-
-    }
-
+}

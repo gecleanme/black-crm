@@ -21,8 +21,9 @@ class Attachment extends Model
         static::deleting(function ($childModel) {
             // Loop through each child record & Delete it if exists
             foreach ($childModel->where('attachable_id', $childModel->attachable_id)->get() as $childRecord) {
-                if (Storage::disk('public')->exists($childRecord->attachments))
-                Storage::delete($childRecord->attachments);
+                if (Storage::disk('public')->exists($childRecord->attachments)) {
+                    Storage::delete($childRecord->attachments);
+                }
             }
         });
     }
