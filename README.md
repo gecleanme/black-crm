@@ -3,49 +3,62 @@
 ## is a minimalistic insurance oriented CRM that stores and manages customer info as well as their contracts
 
 ## Tech & Tools:
-- Laravel (v10 base)
-- Breeze Auth Scaffolding
-- Vue 3: Composition API with ```script setup```
-- Tailwind CSS
-- [DaisyUI](https://daisyui.com/)
-- [SweetAlert](https://sweetalert2.github.io/)
-- [HeadlessUI](https://headlessui.com/)
-- [Vuetify v3](https://vuetifyjs.com/en/)
 
+-   Laravel (v10 base)
+-   Breeze Auth Scaffolding
+-   Vue 3: Composition API with `script setup`
+-   Tailwind CSS
+-   [DaisyUI](https://daisyui.com/)
+-   [SweetAlert](https://sweetalert2.github.io/)
+-   [HeadlessUI](https://headlessui.com/)
+-   [Vuetify v3](https://vuetifyjs.com/en/)
 
 ## Features:
 
-- Functional design
-- Utilizes Polymorphic Relations
-- Support for file uploads
-- Elegant Responsive UI
+-   Functional design
+-   Utilizes Polymorphic Relations
+-   Support for file uploads
+-   Elegant Responsive UI
 
 ## Code Style/Format Treatment
-[Laravel Pint](https://laravel.com/docs/10.x/pint) with default config
+
+[Laravel Pint](https://laravel.com/docs/10.x/pint) with stock config & [Prettier]()
 
 ## Local Dev Env Setup
+
 ### Install Dependencies
+
 ```bash
 composer install
 npm install
 ```
+
 ### Set Environment Variables
+
 ```
 cp .env.example .env
 ```
+
 ### Migrations
+
 ```bash
 php artisan migrate --seed
 ```
+
 ### Run Dev Server
+
 ```bash
 php artisan serve
 ```
+
 ### Compile Vue.js
+
 ```bash
 npm run dev
 ```
+
 ### Storage Symlink
+
 ```bash
 php artisan storage:link
 ```

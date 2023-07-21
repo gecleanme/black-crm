@@ -1,20 +1,24 @@
 <template>
-
-    <div class="flex flex-col justify-center items-center mt-6 mb-6 w-full md:w-3/4 lg:w-90 mx-auto xs:mb-6 py-2">
-        <form @submit.prevent="filter" class="flex flex-col items-center w-full px-2 py-4 rounded-lg shadow-md bg-gray-100">
+    <div
+        class="flex flex-col justify-center items-center mt-6 mb-6 w-full md:w-3/4 lg:w-90 mx-auto xs:mb-6 py-2"
+    >
+        <form
+            @submit.prevent="filter"
+            class="flex flex-col items-center w-full px-2 py-4 rounded-lg shadow-md bg-gray-100"
+        >
             <div class="flex flex-wrap justify-center gap-2 mb-4">
                 <div class="flex flex-wrap gap-2 w-full sm:w-auto">
-<!--                    <select class=" w-full sm:w-40 px-5 py-3 text-gray-700 border-->
-<!--                        border-gray-400 rounded-md appearance-none-->
-<!--                        focus:outline-none focus:ring-2 focus:ring-blue-400-->
-<!--                        focus:border-transparent"-->
-<!--                            v-model="props.type"-->
-<!--                    >-->
-<!--                        <option value="" selected>Type</option>-->
-<!--                        <option v-for="(type,index) in types" :value="type" :key="index">{{type}}</option>-->
-<!--                    </select>-->
+                    <!--                    <select class=" w-full sm:w-40 px-5 py-3 text-gray-700 border-->
+                    <!--                        border-gray-400 rounded-md appearance-none-->
+                    <!--                        focus:outline-none focus:ring-2 focus:ring-blue-400-->
+                    <!--                        focus:border-transparent"-->
+                    <!--                            v-model="props.type"-->
+                    <!--                    >-->
+                    <!--                        <option value="" selected>Type</option>-->
+                    <!--                        <option v-for="(type,index) in types" :value="type" :key="index">{{type}}</option>-->
+                    <!--                    </select>-->
 
-<!--
+                    <!--
                     <select class="w-full sm:w-auto px-3 py-2 text-gray-700 border
                      border-gray-400 rounded-md
                      appearance-none focus:outline-none
@@ -49,47 +53,44 @@
                         <option v-for="(reporter, index) in reporters.data" :key="index" :value="reporter.id">{{reporter.name}}</option>
                     </select>
                     -->
-                    <select class=" w-full sm:w-40 px-5 py-3 text-gray-700 border
-                        border-gray-400 rounded-md appearance-none
-                        focus:outline-none focus:ring-2 focus:ring-blue-400
-                        focus:border-transparent mt-2"
-                            v-model="props.type"
+                    <select
+                        class="w-full sm:w-40 px-5 py-3 text-gray-700 border border-gray-400 rounded-md appearance-none focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent mt-2"
+                        v-model="props.type"
                     >
                         <option value="" selected>Select Type</option>
-                        <option value="Auto"> Auto </option>
-                        <option value="Health"> Health </option>
-                        <option value="Naval"> Naval </option>
-                        <option value="Travel"> Travel </option>
-
+                        <option value="Auto">Auto</option>
+                        <option value="Health">Health</option>
+                        <option value="Naval">Naval</option>
+                        <option value="Travel">Travel</option>
                     </select>
 
+                    <input
+                        type="text"
+                        class="w-full sm:w-auto px-3 py-2 text-gray-700 border border-gray-400 rounded-md appearance-none focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent mt-2"
+                        placeholder="Search Title"
+                        v-model="props.title"
+                    />
 
+                    <input
+                        type="number"
+                        class="w-full sm:w-auto px-3 py-2 text-gray-700 border border-gray-400 rounded-md appearance-none focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent mt-2"
+                        placeholder="Value Greater than"
+                        v-model="props.cycle_value"
+                    />
 
-                    <input type="text" class="w-full sm:w-auto px-3 py-2 text-gray-700 border border-gray-400
-                    rounded-md appearance-none focus:outline-none focus:ring-2
-                    focus:ring-blue-400 focus:border-transparent mt-2" placeholder="Search Title"
-                           v-model="props.title"
-                    >
+                    <input
+                        type="number"
+                        class="w-full sm:w-auto px-3 py-2 text-gray-700 border border-gray-400 rounded-md appearance-none focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent mt-2"
+                        placeholder="Premium Greater than"
+                        v-model="props.premium"
+                    />
 
-
-
-                    <input type="number" class=" w-full sm:w-auto px-3 py-2 text-gray-700 border border-gray-400
-                    rounded-md appearance-none focus:outline-none focus:ring-2
-                    focus:ring-blue-400 focus:border-transparent mt-2" placeholder="Value Greater than"
-                           v-model="props.cycle_value"
-                    >
-
-                    <input type="number" class=" w-full sm:w-auto px-3 py-2 text-gray-700 border border-gray-400
-                    rounded-md appearance-none focus:outline-none focus:ring-2
-                    focus:ring-blue-400 focus:border-transparent mt-2" placeholder="Premium Greater than"
-                           v-model="props.premium"
-                    >
-
-                    <input type="number" class=" w-full sm:w-auto px-3 py-2 text-gray-700 border border-gray-400
-                    rounded-md appearance-none focus:outline-none focus:ring-2
-                    focus:ring-blue-400 focus:border-transparent mt-2" placeholder="Ends within (Days)"
-                           v-model="props.ends_within"
-                    >
+                    <input
+                        type="number"
+                        class="w-full sm:w-auto px-3 py-2 text-gray-700 border border-gray-400 rounded-md appearance-none focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent mt-2"
+                        placeholder="Ends within (Days)"
+                        v-model="props.ends_within"
+                    />
 
                     <!--
                     <div class="mt-4 mx-2">
@@ -116,83 +117,81 @@
                         v-model="props.client"
                         class="w-full mt-2"
                     ></v-autocomplete>
-
-
                 </div>
                 <div class="flex justify-center gap-2 mt-0 w-full sm:w-auto">
-                    <button type="submit" class="w-full sm:w-auto px-4 py-2 text-white bg-black rounded-md focus:outline-none hover:bg-gray-900">Filter</button>
-                    <button type="reset" class="w-full sm:w-auto px-4 py-2 text-black bg-gray-200 rounded-md focus:outline-none hover:bg-gray-300" @click="clear">Clear</button>
+                    <button
+                        type="submit"
+                        class="w-full sm:w-auto px-4 py-2 text-white bg-black rounded-md focus:outline-none hover:bg-gray-900"
+                    >
+                        Filter
+                    </button>
+                    <button
+                        type="reset"
+                        class="w-full sm:w-auto px-4 py-2 text-black bg-gray-200 rounded-md focus:outline-none hover:bg-gray-300"
+                        @click="clear"
+                    >
+                        Clear
+                    </button>
                 </div>
             </div>
         </form>
     </div>
-
 </template>
 
 <script setup>
-
-import {useForm, usePage,router} from "@inertiajs/vue3";
-import {ref, inject, computed} from "vue";
+import { useForm, usePage, router } from "@inertiajs/vue3";
+import { ref, inject, computed } from "vue";
 import route from "ziggy-js/src/js";
 
-
-const data =defineProps({
-    filters:Array,
+const data = defineProps({
+    filters: Array,
 });
 
-let props=null;
+let props = null;
 
+props = useForm({
+    title: data.filters.title,
+    cycle_value: data.filters.cycle_value,
+    premium: data.filters.premium,
+    ends_within: data.filters.ends_within,
+    // new
+    type: data.filters.type ?? "",
+    // is_active: data.filters.is_active ?? false,
+    client: data.filters.client,
+});
 
-    props = useForm({
-
-        title: data.filters.title ,
-        cycle_value : data.filters.cycle_value,
-        premium: data.filters.premium,
-        ends_within: data.filters.ends_within,
-        // new
-        type: data.filters.type ?? "",
-        // is_active: data.filters.is_active ?? false,
-        client: data.filters.client
-
-    });
-
-
-const customers=ref([])
-const searchQuery = ref('')
-const customersLoading = ref(false)
+const customers = ref([]);
+const searchQuery = ref("");
+const customersLoading = ref(false);
 function fetchCustomers() {
-    customersLoading.value=true
-    axios.get(`/customers?search=${searchQuery.value}`).then(({data})=>{
-        customers.value=data.data
-    }).finally(()=>{
-        customersLoading.value=false
-    })
+    customersLoading.value = true;
+    axios
+        .get(`/customers?search=${searchQuery.value}`)
+        .then(({ data }) => {
+            customers.value = data.data;
+        })
+        .finally(() => {
+            customersLoading.value = false;
+        });
 }
 
 function onSearch(q) {
-    searchQuery.value=q;
+    searchQuery.value = q;
 }
 
+const clear = () => router.visit(route(route().current()));
 
-
-const clear = () => router.visit(route(route().current()))
-
-const filter = () => props.get('/contracts',{
-   preserveScroll:true,
-   preserveState:true
-});
-
-
-
-
+const filter = () =>
+    props.get("/contracts", {
+        preserveScroll: true,
+        preserveState: true,
+    });
 </script>
 
 <script>
 export default {
-    name: "FilterFormContracts"
-}
+    name: "FilterFormContracts",
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

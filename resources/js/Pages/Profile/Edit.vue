@@ -1,9 +1,9 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import DeleteUserForm from './Partials/DeleteUserForm.vue';
-import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
-import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
-import { Head } from '@inertiajs/vue3';
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import DeleteUserForm from "./Partials/DeleteUserForm.vue";
+import UpdatePasswordForm from "./Partials/UpdatePasswordForm.vue";
+import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationForm.vue";
+import { Head } from "@inertiajs/vue3";
 import Layout from "@/Layouts/Layout.vue";
 
 defineProps({
@@ -21,7 +21,9 @@ defineProps({
 
     <Layout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Profile</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                Profile
+            </h2>
         </template>
 
         <div class="py-12">
