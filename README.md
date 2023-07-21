@@ -22,7 +22,7 @@
 
 ## Code Style/Format Treatment
 
-[Laravel Pint](https://laravel.com/docs/10.x/pint) with stock config & [Prettier]()
+[Laravel Pint](https://laravel.com/docs/10.x/pint) with stock config & [Prettier](https://prettier.io/)
 
 ## Local Dev Env Setup
 
