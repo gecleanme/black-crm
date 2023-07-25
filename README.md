@@ -5,7 +5,7 @@
 ## Tech & Tools:
 
 -   Laravel (v10 base)
--   Breeze Auth Scaffolding
+-   Breeze/Inertia Scaffolding
 -   Vue 3: Composition API with `script setup`
 -   Tailwind CSS
 -   [DaisyUI](https://daisyui.com/)
