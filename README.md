@@ -19,6 +19,8 @@
 -   Utilizes Polymorphic Relations
 -   Support for file uploads
 -   Elegant Responsive UI
+-   Scope Based dynamic DB Filtering
+-   Ability to export filtered results as a CSV file
 
 ## Code Style/Format Treatment
 
